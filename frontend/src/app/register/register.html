@@ -1,0 +1,55 @@
+
+<!-- <app-navbar></app-navbar> -->
+<div class="register-container">
+  <h2 class="register-title">Gestion des Utilisateurs</h2>
+  <button class="register-add-btn" (click)="openRegisterModal()">Ajouter un Utilisateur</button>
+  <div *ngIf="alertMessage" class="register-alert {{alertType}}">{{ alertMessage }}</div>
+  <table class="register-table" *ngIf="utilisateurs && utilisateurs.length">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Rôle</th>
+        <th>motDePasse</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let utilisateur of utilisateurs">
+        <td>{{ utilisateur.nom }}</td>
+        <td>{{ utilisateur.email }}</td>
+        <td>{{ utilisateur.role }}</td>
+        <td>{{ utilisateur.motDePasse }}</td>
+        <td>
+          <button class="register-action-btn edit" (click)="openEditModal(utilisateur)">Modifier</button>
+          <button class="register-action-btn delete" (click)="openDeleteModal(utilisateur)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="utilisateurs && utilisateurs.length === 0" class="register-empty">Aucun utilisateur trouvé.</div>
+
+  <!-- Modal d'ajout/modification utilisateur -->
+  <div class="modal" [class.show]="showEditModal" *ngIf="showEditModal">
+    <div class="modal-content">
+      <span class="close" (click)="closeEditModal()">&times;</span>
+      <h3>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un Utilisateur</h3>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <label>Nom</label>
+        <input type="text" formControlName="nom" />
+        <label>Email</label>
+        <input type="email" formControlName="email" />
+        <label>Mot de Passe</label>
+        <input type="password" formControlName="motdepasse" />
+        <label>Rôle</label>
+        <select formControlName="role">
+          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        </select>
+        <div class="modal-actions">
+          <button type="submit" class="register-action-btn save">{{ isEditMode ? 'Enregistrer' : 'Ajouter' }}</button>
+          <button type="button" class="register-action-btn cancel" (click)="closeEditModal()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

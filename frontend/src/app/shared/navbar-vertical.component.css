@@ -1,0 +1,31 @@
+/* Styles pour la barre de navigation verticale */
+aside {
+  background: #f3f4f6;
+  border-right: 1px solid #e5e7eb;
+  padding: 1rem;
+  min-height: 100vh;
+}
+h3 {
+  margin-bottom: 1rem;
+}
+ul li a.nav-btn {
+  display: block;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  color: #fff;
+}
+ul li a.nav-btn {
+  background: #1a7f37;
+}
+ul li a.nav-btn[style*="background:#2563eb;"] {
+  background: #2563eb;
+}
+ul li a.nav-btn[style*="background:#10b981;"] {
+  background: #10b981;
+}
+ul li a.nav-btn[style*="background:#f59e42;"] {
+  background: #f59e42;
+}

@@ -1,0 +1,28 @@
+<!-- Page de gestion des EMF -->
+<div class="emf-gestion-container" style="max-width:900px;margin:2rem auto;background:#fff;padding:2rem;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+  <h2 style="margin-bottom:2rem;color:#212529;">Gestion des EMF</h2>
+  <form style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
+  <input type="text" [(ngModel)]="searchTerm" name="searchTerm" placeholder="Rechercher un EMF..." style="flex:2;padding:8px 16px;border-radius:6px;border:1px solid #e5e7eb;" />
+    <button type="button" (click)="search()" style="background:#0d6efd;color:#fff;padding:8px 24px;border:none;border-radius:6px;">Rechercher</button>
+    <button type="button" (click)="addEmf()" style="background:#198754;color:#fff;padding:8px 24px;border:none;border-radius:6px;">Ajouter EMF</button>
+  </form>
+  <table style="width:100%;border-collapse:collapse;">
+    <thead>
+      <tr style="background:#f8fafc;color:#212529;">
+        <th style="padding:12px;border-bottom:1px solid #e5e7eb;">Nom</th>
+        <th style="padding:12px;border-bottom:1px solid #e5e7eb;">Email</th>
+        <th style="padding:12px;border-bottom:1px solid #e5e7eb;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emf of emfs">
+        <td style="padding:12px;border-bottom:1px solid #e5e7eb;">{{ emf.denomination }}</td>
+        <td style="padding:12px;border-bottom:1px solid #e5e7eb;">{{ emf.email }}</td>
+        <td style="padding:12px;border-bottom:1px solid #e5e7eb;">
+          <button type="button" (click)="editEmf(emf)" style="background:#ffc107;color:#212529;padding:6px 12px;border:none;border-radius:6px;margin-right:8px;">Modifier</button>
+          <button type="button" (click)="deleteEmf(emf.id!)" style="background:#dc3545;color:#fff;padding:6px 12px;border:none;border-radius:6px;">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

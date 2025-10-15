@@ -1,0 +1,11 @@
+<div class="remplir-questionnaire">
+  <h2>{{ questionnaire.titre }}</h2>
+  <form (ngSubmit)="submit()">
+    <div *ngFor="let q of questionnaire.questions">
+      <label>{{ q.texte }}</label>
+      <input [(ngModel)]="q.reponse" name="reponse{{q.id}}" required />
+    </div>
+    <button type="submit">Soumettre</button>
+  </form>
+  <div *ngIf="message">{{ message }}</div>
+</div>

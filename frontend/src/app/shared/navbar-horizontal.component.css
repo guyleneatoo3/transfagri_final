@@ -1,0 +1,29 @@
+/* Styles pour la barre de navigation horizontale */
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f3f4f6;
+  padding: 0.5rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.nav-logo {
+  font-weight: bold;
+  color: #1a7f37;
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+.nav-links a {
+  margin: 0 1rem;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+.nav-btn {
+  background: #1a7f37;
+  color: #fff;
+  padding: 0.4rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}

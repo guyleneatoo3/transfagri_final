@@ -1,0 +1,45 @@
+<div class="dashboard-pasnfi-container" style="display:flex;min-height:100vh;background:#f8fafc;">
+  <!-- Sidebar -->
+  <aside style="width:220px;background:#212529;color:#fff;display:flex;flex-direction:column;align-items:center;padding:2rem 0;box-shadow:2px 0 8px rgba(0,0,0,0.04);">
+    <h3 style="margin-bottom:2rem;font-size:1.3rem;letter-spacing:1px;">PASNFI Menu</h3>
+    <nav style="width:100%;">
+      <ul style="list-style:none;padding:0;width:100%;">
+        <li><a href="/dashboard/pasnfi/emf" style="display:block;padding:12px 24px;color:#fff;text-decoration:none;border-radius:6px;margin-bottom:8px;background:#0d6efd;">Gérer les EMF</a></li>
+        <li><a href="/dashboard/pasnfi/questionnaires" style="display:block;padding:12px 24px;color:#fff;text-decoration:none;border-radius:6px;margin-bottom:8px;background:#198754;">Questionnaires</a></li>
+        <li><a href="/dashboard/pasnfi/activites" style="display:block;padding:12px 24px;color:#fff;text-decoration:none;border-radius:6px;background:#dc3545;">Activités</a></li>
+      </ul>
+    </nav>
+    <div style="margin-top:auto;padding:1rem 0;font-size:13px;color:#adb5bd;">Connecté en tant que <strong>ADMIN</strong></div>
+  </aside>
+  <!-- Main content -->
+  <div style="flex:1;display:flex;flex-direction:column;">
+    <!-- Header -->
+    <header style="background:#fff;padding:1.5rem 2rem;box-shadow:0 2px 8px rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;">
+      <h2 style="margin:0;font-size:2rem;color:#212529;">Dashboard ADMIN</h2>
+      <a href="/hacceuil">Accueil</a>  
+      <a href="/apropos">À Propos  TRANSFAGRI</a>
+        <a href="/contact">Nous contacter</a>
+        <a href="/login">Connexion</a>
+      <input type="search" placeholder="Rechercher..." style="padding:8px 16px;border-radius:6px;border:1px solid #e5e7eb;width:220px;" />
+    </header>
+    <!-- Cards -->
+    <section style="display:flex;gap:2rem;padding:2rem 2rem 0 2rem;flex-wrap:wrap;">
+      <div style="background:#0d6efd;color:#fff;flex:1;min-width:220px;padding:1.2rem 1.5rem;border-radius:1rem;box-shadow:0 2px 8px rgba(13,110,253,0.08);">
+        <h4 style="margin:0 0 8px 0;font-size:1.1rem;">EMF Beneficiaire</h4>
+        <div style="font-size:2rem;font-weight:bold;">10</div>
+        <a href="/dashboard/pasnfi/emf" style="color:#fff;text-decoration:underline;font-size:13px;"></a>
+      </div>
+
+      <div style="background:#198754;color:#fff;flex:1;min-width:220px;padding:1.2rem 1.5rem;border-radius:1rem;box-shadow:0 2px 8px rgba(25,135,84,0.08);">
+        <h4 style="margin:0 0 8px 0;font-size:1.1rem;">Rapports</h4>
+        <div style="font-size:2rem;font-weight:bold;">4</div>
+        <a href="/dashboard/pasnfi/questionnaires" style="color:#fff;text-decoration:underline;font-size:13px;"></a>
+      </div>
+      <div style="background:#dc3545;color:#fff;flex:1;min-width:220px;padding:1.2rem 1.5rem;border-radius:1rem;box-shadow:0 2px 8px rgba(220,53,69,0.08);">
+        <h4 style="margin:0 0 8px 0;font-size:1.1rem;">Activités</h4>
+        <div style="font-size:2rem;font-weight:bold;">2</div>
+        <a href="/dashboard/pasnfi/activites" style="color:#fff;text-decoration:underline;font-size:13px;"></a>
+      </div>
+    </section>
+  </div>
+</div>

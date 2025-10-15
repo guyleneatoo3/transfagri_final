@@ -1,0 +1,19 @@
+<div class="liste-rapports">
+  <h2>Liste des rapports</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of rapports">
+        <td>{{ r.titre }}</td>
+        <td>{{ r.date }}</td>
+        <td><a [href]="r.url" target="_blank">Voir</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

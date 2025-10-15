@@ -1,0 +1,40 @@
+<div class="gestion-indicateurs">
+  <h2>Gestion des indicateurs</h2>
+  <div class="indicateur-list">
+    <table>
+      <thead>
+        <tr>
+          <th>Libellé</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let indicateur of indicateurs">
+          <td>{{ indicateur.libelle }}</td>
+          <td>{{ indicateur.description }}</td>
+          <td>
+            <button (click)="selectIndicateur(indicateur)">Modifier</button>
+            <button (click)="deleteIndicateur(indicateur)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="indicateur-form">
+    <h3 *ngIf="!isEditing">Ajouter un indicateur</h3>
+    <h3 *ngIf="isEditing">Modifier l'indicateur</h3>
+    <form (ngSubmit)="isEditing ? updateIndicateur() : addIndicateur()">
+      <input [(ngModel)]="getFormIndicateur().libelle" name="libelle" placeholder="Libellé" required />
+      <input [(ngModel)]="getFormIndicateur().description" name="description" placeholder="Description" required />
+      <button type="submit">{{ isEditing ? 'Mettre à jour' : 'Ajouter' }}</button>
+      <button type="button" (click)="clearSelection()" *ngIf="isEditing">Annuler</button>
+    </form>
+  </div>
+  <div class="mistral-section">
+    <h3>Générer un questionnaire (API Mistral)</h3>
+    <textarea [(ngModel)]="mistralPrompt" name="mistralPrompt" placeholder="Décris l'indicateur ou le besoin..."></textarea>
+    <button (click)="genererQuestionnaire()">Générer</button>
+    <div *ngIf="mistralResponse">{{ mistralResponse }}</div>
+  </div>
+</div>

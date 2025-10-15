@@ -1,0 +1,105 @@
+
+.activite-section {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0001;
+  padding: 2.5rem 2rem;
+}
+.titre-activite {
+  text-align: center;
+  color: #1a7f37;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+.activite-form-table {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.activite-form-table input,
+.activite-form-table select {
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.activite-form-table button {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  background: #1a7f37;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.activite-form-table button:hover {
+  background: #166534;
+}
+.table-container {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px #0001;
+}
+.table-activite {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+.table-activite th {
+  background: #f6fafd;
+  color: #222;
+  font-weight: 600;
+  padding: 1rem 0.7rem;
+  text-align: left;
+}
+.table-activite td {
+  padding: 0.9rem 0.7rem;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 1rem;
+}
+.statut-badge {
+  display: inline-block;
+  padding: 0.3em 1.1em;
+  border-radius: 16px;
+  font-size: 1em;
+  font-weight: 500;
+  text-align: center;
+}
+.statut-termine {
+  background: #d1fae5;
+  color: #059669;
+}
+.statut-encours {
+  background: #fef9c3;
+  color: #b45309;
+}
+.statut-retard {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.btn-action {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.9rem;
+  margin-right: 0.4rem;
+  cursor: pointer;
+  font-size: 0.98em;
+  transition: background 0.2s;
+}
+.btn-action:hover {
+  background: #1e40af;
+}
+.btn-supprimer {
+  background: #e63946;
+}
+.btn-supprimer:hover {
+  background: #b91c1c;
+}

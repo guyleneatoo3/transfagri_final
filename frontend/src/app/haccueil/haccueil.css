@@ -1,0 +1,192 @@
+@import '../haccueil/haccueil.css';
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7fafc;
+  color: #222;
+}
+
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1a7f37;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+.nav-links a {
+  color: #444;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover {
+  color: #1a7f37;
+}
+.nav-btn {
+  background: #1a7f37;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(26,127,55,0.08);
+}
+.nav-btn:hover {
+  background: #145c2c;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.hero {
+  background: #fff;
+  text-align: center;
+  padding: 4rem 1rem 2rem 1rem;
+}
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 1rem;
+}
+.hero-desc {
+  color: #555;
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+}
+.hero-btn {
+  background: #1a7f37;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26,127,55,0.08);
+  transition: background 0.2s, transform 0.2s;
+}
+.hero-btn:hover {
+  background: #145c2c;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin: 2rem 0 3rem 0;
+}
+.metric-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 2rem 2.5rem;
+  min-width: 220px;
+  text-align: center;
+  flex: 1 1 220px;
+}
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1a7f37;
+}
+.metric-label {
+  color: #888;
+  font-size: 1.1rem;
+}
+
+.activities-section {
+  max-width: 1100px;
+  margin: 0 auto 2rem auto;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 2rem 1rem;
+}
+.activities-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a7f37;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.activities-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.activities-table th, .activities-table td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+}
+.activities-table th {
+  background: #f7fafc;
+  color: #555;
+  font-size: 1rem;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+.activities-table tr {
+  transition: background 0.2s;
+}
+.activities-table tr:hover {
+  background: #f0fdf4;
+}
+.status {
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.status.termine {
+  background: #d1fae5;
+  color: #065f46;
+}
+.status.encours {
+  background: #fef9c3;
+  color: #92400e;
+}
+.status.retard {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+footer {
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  padding: 2rem 0 1rem 0;
+  text-align: center;
+  color: #888;
+  font-size: 1rem;
+}
+

@@ -1,0 +1,15 @@
+<div class="gestion-formation">
+  <h2>Gestion des formations</h2>
+  <div class="upload-section">
+    <input type="file" (change)="onFileSelected($event)" accept="application/pdf" />
+    <button (click)="uploadFile()" [disabled]="!selectedFile">Téléverser</button>
+    <div *ngIf="uploadProgress > 0 && uploadProgress < 100">Progression : {{ uploadProgress }}%</div>
+    <div *ngIf="message">{{ message }}</div>
+  </div>
+  <div class="uploaded-files">
+    <h3>Fichiers téléversés</h3>
+    <ul>
+      <li *ngFor="let file of uploadedFiles">{{ file }}</li>
+    </ul>
+  </div>
+</div>

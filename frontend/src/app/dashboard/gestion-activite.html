@@ -1,0 +1,47 @@
+<div class="gestion-activite">
+  <h2>Gestion des activités</h2>
+  <div class="activite-list">
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>EMF Assigné</th>
+          <th>Statut</th>
+          <th>Date d'échéance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let activite of activites">
+          <td>{{ activite.nom }}</td>
+          <td>{{ activite.description }}</td>
+          <td>{{ activite.emfAssigne }}</td>
+          <td>{{ activite.statut }}</td>
+          <td>{{ activite.dateEcheance }}</td>
+          <td>
+            <button (click)="selectActivite(activite)">Modifier</button>
+            <button (click)="deleteActivite(activite)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="activite-form">
+    <h3 *ngIf="!isEditing">Ajouter une activité</h3>
+    <h3 *ngIf="isEditing">Modifier l'activité</h3>
+    <form (ngSubmit)="isEditing ? updateActivite() : addActivite()">
+      <input [(ngModel)]="getFormActivite().nom" name="nom" placeholder="Nom" required />
+      <input [(ngModel)]="getFormActivite().description" name="description" placeholder="Description" required />
+      <input [(ngModel)]="getFormActivite().emfAssigne" name="emfAssigne" placeholder="EMF Assigné" required />
+      <select [(ngModel)]="getFormActivite().statut" name="statut">
+        <option value="En cours">En cours</option>
+        <option value="Terminé">Terminé</option>
+        <option value="En retard">En retard</option>
+      </select>
+      <input [(ngModel)]="getFormActivite().dateEcheance" name="dateEcheance" placeholder="Date d'échéance (dd/MM/yyyy)" required />
+      <button type="submit">{{ isEditing ? 'Mettre à jour' : 'Ajouter' }}</button>
+      <button type="button" (click)="clearSelection()" *ngIf="isEditing">Annuler</button>
+    </form>
+  </div>
+</div>

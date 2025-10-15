@@ -1,0 +1,33 @@
+<div class="gestion-questionnaire">
+  <h2>Générer un questionnaire</h2>
+  <form (ngSubmit)="genererQuestionnaire()" style="margin-bottom:2rem;">
+    <div>
+      <label for="titre">Titre :</label>
+      <input id="titre" [(ngModel)]="titre" name="titre" required />
+    </div>
+    <div>
+      <label for="description">Description :</label>
+      <textarea id="description" [(ngModel)]="description" name="description" required></textarea>
+    </div>
+    <button type="submit">Générer</button>
+  </form>
+  <div *ngIf="message" style="color:green;margin-bottom:1rem;">{{ message }}</div>
+  <h2>Questionnaires générés</h2>
+  <table *ngIf="questionnaires.length">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let q of questionnaires">
+        <td>{{ q.titre }}</td>
+        <td>{{ q.description }}</td>
+        <td>{{ q.createdAt | date:'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!questionnaires.length" style="color:#888;">Aucun questionnaire généré pour le moment.</div>
+</div>

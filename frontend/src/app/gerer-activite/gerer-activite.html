@@ -1,0 +1,45 @@
+<section class="activite-section">
+  <h2 class="titre-activite">Activités Récentes</h2>
+  <form (ngSubmit)="onSubmit()" #activiteForm="ngForm" class="activite-form-table">
+    <input type="text" name="nom" [(ngModel)]="activite.nom" placeholder="Activité" required />
+    <input type="text" name="emfAssigne" [(ngModel)]="activite.emfAssigne" placeholder="EMF Assigné" required />
+    <select name="statut" [(ngModel)]="activite.statut" required>
+      <option value="" disabled selected>Statut</option>
+      <option *ngFor="let s of statutOptions" [value]="s.value">{{ s.label }}</option>
+    </select>
+    <input type="date" name="dateEcheance" [(ngModel)]="activite.dateEcheance" required />
+    <button type="submit">{{ editMode ? 'Mettre à jour' : 'Ajouter' }}</button>
+    <button *ngIf="editMode" type="button" (click)="cancelEdit()">Annuler</button>
+  </form>
+  <div class="table-container">
+    <table class="table-activite">
+      <thead>
+        <tr>
+          <th>Activité</th>
+          <th>EMF Assigné</th>
+          <th>Statut</th>
+          <th>Date d'échéance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let act of activites">
+          <td>{{ act.nom }}</td>
+          <td>{{ act.emfAssigne }}</td>
+          <td>
+            <span [ngClass]="{
+              'statut-termine': act.statut === 'Terminé',
+              'statut-encours': act.statut === 'En cours',
+              'statut-retard': act.statut === 'En retard'
+            }" class="statut-badge">{{ act.statut }}</span>
+          </td>
+          <td>{{ act.dateEcheance | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <button class="btn-action" (click)="editActivite(act)">Modifier</button>
+            <button class="btn-action btn-supprimer" (click)="deleteActivite(act)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

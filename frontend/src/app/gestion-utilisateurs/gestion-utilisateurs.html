@@ -1,0 +1,90 @@
+
+<nav>
+  <div class="nav-content">
+    <a class="nav-logo" href="/accueil">TRANSFAGRI</a>
+    <div class="nav-links">
+      <a href="/accueil">Accueil</a>
+      <a href="/dashboard">Tableau de Bord</a>
+      <a href="/rapports">Rapports</a>
+      <a href="/apropos">À Propos</a>
+    </div>
+    <a href="/login" class="nav-btn">Connexion</a>
+  </div>
+</nav>
+
+<h6 class="page-title">🏦 Gestion des EMF</h6>
+
+<!-- Formulaire de création -->
+<div class="card form-section">
+  <h3 class="section-title">➕ Ajouter une EMF</h3>
+  <div class="form-grid">
+    <input [(ngModel)]="nouvelUtilisateur.denomination" placeholder="Dénomination" />
+    <input [(ngModel)]="nouvelUtilisateur.localisation" placeholder="Localisation" />
+    <input [(ngModel)]="nouvelUtilisateur.Dirigeant" placeholder="Nom du Dirigeant" />
+    <input [(ngModel)]="nouvelUtilisateur.Numero_d_agreement" placeholder="N° d’agrément" />
+    <input [(ngModel)]="nouvelUtilisateur.d_imatriculation_au_CNC" placeholder="N° CNC" />
+    <input [(ngModel)]="nouvelUtilisateur.email" placeholder="Email" />
+    <button class="btn btn-primary" (click)="creerUtilisateur()">Créer</button>
+  </div>
+</div>
+
+<!-- Barre de recherche avec bouton de réinitialisation -->
+<div class="search-section card">
+  <div class="search-inline-wrapper">
+    <input
+      [(ngModel)]="recherche"
+      class="search-input-inline"
+      placeholder="🔍 Rechercher une EMF..." />
+    <button *ngIf="recherche" (click)="recherche = ''" class="btn-reset" title="Réinitialiser la recherche">
+      🔄
+    </button>
+  </div>
+</div>
+
+
+<!-- Liste des utilisateurs -->
+<div class="card table-section">
+  <h3 class="section-title">📋 Liste des EMF</h3>
+  <table class="emf-table">
+    <thead>
+      <tr>
+        <th>Dénomination</th>
+        <th>Localisation</th>
+        <th>Dirigeant</th>
+        <th>N° Agrément</th>
+        <th>N° CNC</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let utilisateur of utilisateursFiltres">
+        <ng-container *ngIf="utilisateurEnEdition?.id !== utilisateur.id; else edition">
+          <td>{{ utilisateur.denomination }}</td>
+          <td>{{ utilisateur.localisation }}</td>
+          <td>{{ utilisateur.Dirigeant }}</td>
+          <td>{{ utilisateur.Numero_d_agreement }}</td>
+          <td>{{ utilisateur.d_imatriculation_au_CNC }}</td>
+          <td>{{ utilisateur.email }}</td>
+          <td>
+            <button class="btn btn-edit" (click)="modifierUtilisateur(utilisateur)">✏️</button>
+            <button class="btn btn-delete" (click)="supprimerUtilisateur(utilisateur.id)">🗑️</button>
+          </td>
+        </ng-container>
+
+        <ng-template #edition>
+          <td><input [(ngModel)]="utilisateurEnEdition!.denomination" /></td>
+          <td><input [(ngModel)]="utilisateurEnEdition!.localisation" /></td>
+          <td><input [(ngModel)]="utilisateurEnEdition!.Dirigeant" /></td>
+          <td><input [(ngModel)]="utilisateurEnEdition!.Numero_d_agreement" /></td>
+          <td><input [(ngModel)]="utilisateurEnEdition!.d_imatriculation_au_CNC" /></td>
+          <td><input [(ngModel)]="utilisateurEnEdition!.email" /></td>
+          <td>
+            <button class="btn btn-save" (click)="enregistrerModification()">💾</button>
+            <button class="btn btn-cancel" (click)="annulerModification()">❌</button>
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
+</div>

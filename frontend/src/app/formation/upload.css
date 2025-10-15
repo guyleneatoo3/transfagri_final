@@ -1,0 +1,42 @@
+@import '../haccueil/haccueil.css';
+
+.upload-disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+button:hover:enabled {
+  background-color: #0056b3;
+}
+
+/* Barre de progression */
+.progress-container {
+  margin-top: 20px;
+  background: #eee;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.progress-bar {
+  background: #28a745;
+  height: 20px;
+  line-height: 20px;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  transition: width 0.4s ease;
+}
+
+/* Messages */
+.message {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}

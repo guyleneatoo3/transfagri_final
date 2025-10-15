@@ -1,0 +1,53 @@
+<div class="gestion-emf">
+  <h2>Gestion des EMF</h2>
+  <div class="emf-search">
+    <input [(ngModel)]="searchTerm" placeholder="Rechercher un EMF..." />
+    <button (click)="searchEmf()">Rechercher</button>
+    <button (click)="clearSelection()">Réinitialiser</button>
+  </div>
+
+  <div class="emf-list">
+    <table>
+      <thead>
+        <tr>
+          <th>Denomination</th>
+          <th>Localisation</th>
+          <th>Dirigeant</th>
+          <th>Numéro d'Agrément</th>
+          <th>Numéro CNC</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emf of emfs">
+          <td>{{ emf.denomination }}</td>
+          <td>{{ emf.localisation }}</td>
+          <td>{{ emf.dirigeant }}</td>
+          <td>{{ emf.numeroDAgrement }}</td>
+          <td>{{ emf.numeroCNC }}</td>
+          <td>{{ emf.email }}</td>
+          <td>
+            <button (click)="selectEmf(emf)">Modifier</button>
+            <button (click)="deleteEmf(emf)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="emf-form">
+    <h3 *ngIf="!isEditing">Ajouter un EMF</h3>
+    <h3 *ngIf="isEditing">Modifier l'EMF</h3>
+    <form (ngSubmit)="isEditing ? updateEmf() : addEmf()">
+      <input [(ngModel)]="getFormEmf().denomination" name="denomination" placeholder="Dénomination" required />
+      <input [(ngModel)]="getFormEmf().localisation" name="localisation" placeholder="Localisation" required />
+      <input [(ngModel)]="getFormEmf().dirigeant" name="dirigeant" placeholder="Dirigeant" required />
+      <input [(ngModel)]="getFormEmf().numeroDAgrement" name="numeroDAgrement" placeholder="Numéro d'Agrément" required />
+      <input [(ngModel)]="getFormEmf().numeroCNC" name="numeroCNC" placeholder="Numéro CNC" required />
+      <input [(ngModel)]="getFormEmf().email" name="email" placeholder="Email" required />
+      <button type="submit">{{ isEditing ? 'Mettre à jour' : 'Ajouter' }}</button>
+      <button type="button" (click)="clearSelection()" *ngIf="isEditing">Annuler</button>
+    </form>
+  </div>
+</div>

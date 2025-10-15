@@ -1,0 +1,35 @@
+<nav>
+  <div class="nav-content">
+    <a class="nav-logo" href="/accueil">TRANSFAGRI</a>
+    <div class="nav-links">
+      <a href="/accueil">Accueil</a>
+      <a href="/dashboard">Tableau de Bord</a>
+      <a href="/rapports">Rapports</a>
+      <a href="/apropos">À Propos</a>
+    </div>
+    <a href="/login" class="nav-btn">Connexion</a>
+  </div>
+</nav>
+<div class="upload-container">
+  <div class="upload-card">
+    <h2>📄 Uploader un fichier PDF</h2>
+
+    <input
+      type="file"
+      id="fileInput"
+      (change)="onFileSelected($event)"
+      accept="application/pdf"
+    />
+    <label for="fileInput" class="file-label">Choisir un fichier PDF</label>
+
+    <button (click)="upload()" [disabled]="!selectedFile">Téléverser</button>
+
+    <div *ngIf="progress > 0" class="progress-container">
+      <div class="progress-bar" [style.width.%]="progress">{{ progress }}%</div>
+    </div>
+
+    <div *ngIf="message" [class.success]="uploadSuccess" [class.error]="!uploadSuccess" class="message">
+      {{ message }}
+    </div>
+  </div>
+</div>

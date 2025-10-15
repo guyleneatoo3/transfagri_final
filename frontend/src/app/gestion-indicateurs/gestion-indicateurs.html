@@ -1,0 +1,56 @@
+
+<nav>
+  <div class="nav-content">
+    <a class="nav-logo" href="/accueil">TRANSFAGRI</a>
+    <div class="nav-links">
+      <a href="/accueil">Accueil</a>
+      <a href="/dashboard">Tableau de Bord</a>
+      <a href="/rapports">Rapports</a>
+      <a href="/apropos">À Propos</a>
+    </div>
+    <a href="/login" class="nav-btn">Connexion</a>
+  </div>
+</nav>
+
+<h2 class="page-title">📊 Gestion des Indicateurs</h2>
+
+<!-- Formulaire de création -->
+<div class="card form-section">
+  <h3 class="section-title">➕ Ajouter un indicateur</h3>
+  <div class="form-grid">
+    <input [(ngModel)]="nouvelIndicateur.libelle" placeholder="Libellé de l'indicateur" />
+    <input [(ngModel)]="nouvelIndicateur.description" placeholder="Description" />
+    <button class="btn btn-primary" (click)="creerIndicateur()">Ajouter</button>
+  </div>
+</div>
+
+<!-- Barre de recherche -->
+<div class="card search-section">
+  <input [(ngModel)]="recherche" class="search-input" placeholder="🔍 Rechercher un indicateur..." />
+</div>
+
+<!-- Liste des indicateurs -->
+<div class="card table-section">
+  <h3 class="section-title">📋 Liste des indicateurs</h3>
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>Libellé</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let indicateur of indicateursFiltres">
+        <td>{{ indicateur.libelle }}</td>
+        <td>{{ indicateur.description }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Génération du questionnaire -->
+<div class="card questionnaire-section">
+  <h3 class="section-title">📝 Génération de questionnaire</h3>
+  <textarea [(ngModel)]="descriptionQuestionnaire" placeholder="Décris le questionnaire à générer pour les EMF"></textarea>
+  <button class="btn btn-secondary" (click)="genererQuestionnairePourEMF()">Générer le questionnaire</button>
+</div>

@@ -1,0 +1,138 @@
+@import '../haccueil/haccueil.css';
+
+/* SEARCH FORM */
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-form input {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-form button {
+  padding: 6px 14px;
+  border: none;
+  background: #ffd600;
+  color: #0c365f;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.search-form button:hover {
+  background: #ffe46b;
+}
+
+/* MAIN CONTENT LAYOUT */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background-color: #0c365f;
+  color: #fff;
+  padding: 25px 20px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar h3 {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #ffd600;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 14px;
+}
+
+/* SIDEBAR BUTTONS */
+.sidebar-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #174a7c;
+  color: #ffd600;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+.sidebar-btn:hover {
+  background-color: #ffd600;
+  color: #0c365f;
+  transform: scale(1.02);
+}
+
+/* CONTENT AREA */
+.content-area {
+  flex: 1;
+  padding: 30px;
+  background-color: #ffffff;
+  overflow-y: auto;
+  border-top-left-radius: 12px;
+}
+
+/* PDF UPLOAD STYLES */
+.sidebar input[type="file"] {
+  display: none;
+}
+
+.sidebar label.sidebar-btn {
+  display: block;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.sidebar .pdf-list {
+  margin-top: 10px;
+  padding-left: 0;
+}
+
+.sidebar .pdf-list li {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.sidebar .pdf-list a {
+  color: #ffd600;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+.sidebar .pdf-list a:hover {
+  color: #fff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar {
+    flex-direction: column;
+}
+}

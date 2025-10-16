@@ -80,7 +80,8 @@ export const routes: Routes = [
     loadComponent: () => import('./dashboard/dashboard-pasnfi').then(m => m.DashboardPasnfiComponent),
     canActivate: [authGuard, roleGuard], data: { roles: ['PASNFI'] },
     children: [
-  { path: 'rapports', loadComponent: () => import('./dashboard/liste-rapports').then(m => m.ListeRapportsComponent), canActivate: [authGuard] }
+  { path: 'rapports', loadComponent: () => import('./dashboard/liste-rapports').then(m => m.ListeRapportsComponent), canActivate: [authGuard] },
+  { path: 'rapports/:id', loadComponent: () => import('./dashboard/rapport-detail').then(m => m.RapportDetailComponent), canActivate: [authGuard] }
     ]
   },
   {

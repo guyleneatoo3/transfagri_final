@@ -1,5 +1,5 @@
 <app-sidebar-layout>
-  <section class="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+  <section class="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4" *ngIf="!isChildView">
     <button class="rounded-xl p-4 text-left shadow bg-sky-600 text-white hover:brightness-95" routerLink="/dashboard/admin/utilisateurs">
       <div class="font-semibold">Utilisateurs</div>
       <div class="text-3xl font-extrabold">•</div>
@@ -22,12 +22,12 @@
     </button>
   </section>
 
-  <section class="mt-4">
+  <section class="mt-4" *ngIf="!isChildView">
     <app-kpi-charts [emfs]="counts.emfs" [indicateurs]="counts.indicateurs" [questionnaires]="counts.questionnaires" [activites]="counts.activites"></app-kpi-charts>
     <app-extra-charts [emfs]="counts.emfs" [indicateurs]="counts.indicateurs" [questionnaires]="counts.questionnaires" [activites]="counts.activites"></app-extra-charts>
   </section>
 
-  <section>
+  <section *ngIf="isChildView">
     <div class="max-w-6xl mx-auto">
       <router-outlet></router-outlet>
     </div>

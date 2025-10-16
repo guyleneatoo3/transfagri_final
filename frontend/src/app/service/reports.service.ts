@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Report { id: number; title: string; generatedAt: string; contentJson: string; }
+export interface Report { id: number; title: string; generatedAt: string; contentJson: string; aiSummary?: string; }
 
 @Injectable({ providedIn: 'root' })
 export class ReportsService {
@@ -15,4 +15,5 @@ export class ReportsService {
   list(): Observable<Report[]> { return this.http.get<Report[]>(this.base, { headers: this.headers() }); }
   get(id: number): Observable<Report> { return this.http.get<Report>(`${this.base}/${id}`, { headers: this.headers() }); }
   generate(questionnaireId: number): Observable<Report> { return this.http.post<Report>(`${this.base}/generate/${questionnaireId}`, {}, { headers: this.headers() }); }
+  summarizeByQuestionnaire(questionnaireId: number): Observable<Report> { return this.http.post<Report>(`${this.base}/summarizeByQuestionnaire/${questionnaireId}`, {}, { headers: this.headers() }); }
 }

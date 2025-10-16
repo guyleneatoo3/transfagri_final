@@ -1,5 +1,7 @@
 package com.example.TRANSFAGRI.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -11,10 +13,12 @@ public class QuestionnaireAnswer {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "questionnaire_id")
+    @JsonIgnore // avoid serializing Hibernate proxy; expose questionnaireId instead
     private Questionnaire questionnaire;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emf_user_id")
+    @JsonIgnore // avoid serializing Hibernate proxy; expose emfUserId instead
     private Utilisateur emfUser;
 
     @Lob
@@ -41,4 +45,11 @@ public class QuestionnaireAnswer {
     public void setJsonAnswers(String jsonAnswers) { this.jsonAnswers = jsonAnswers; }
     public LocalDateTime getSubmittedAt() { return submittedAt; }
     public void setSubmittedAt(LocalDateTime submittedAt) { this.submittedAt = submittedAt; }
+
+    // Lightweight identifiers for API consumers
+    @JsonProperty("questionnaireId")
+    public Long getQuestionnaireId() { return questionnaire != null ? questionnaire.getId() : null; }
+
+    @JsonProperty("emfUserId")
+    public Long getEmfUserId() { return emfUser != null ? emfUser.getIdutilisateur() : null; }
 }

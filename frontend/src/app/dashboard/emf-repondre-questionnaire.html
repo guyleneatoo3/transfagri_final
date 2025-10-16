@@ -1,5 +1,8 @@
 <div class="p-4">
   <h2 class="text-xl font-semibold mb-3">Questionnaires partagés</h2>
+  <div *ngIf="message" class="mb-3 p-3 rounded border bg-emerald-50 border-emerald-200 text-emerald-700">
+    {{ message }}
+  </div>
   <div class="grid md:grid-cols-2 gap-4">
     <div class="bg-white rounded shadow p-3">
       <ul class="divide-y">
@@ -8,7 +11,10 @@
             <div class="font-medium">{{ q.titre }}</div>
             <div class="text-sm text-gray-500">Lancé le: {{ q.sharedAt || q.createdAt | date:'mediumDate' }}</div>
           </div>
-          <button class="px-3 py-1 rounded bg-blue-600 text-white" (click)="open(q)">Répondre</button>
+          <div class="flex items-center gap-2">
+            <span *ngIf="q.id && answeredById[q.id]" class="text-sm text-emerald-600">Déjà répondu</span>
+            <button class="px-3 py-1 rounded bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed" (click)="open(q)" [disabled]="q.id && answeredById[q.id]">Répondre</button>
+          </div>
         </li>
       </ul>
     </div>

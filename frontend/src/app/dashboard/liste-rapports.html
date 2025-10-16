@@ -1,19 +1,23 @@
 <div class="liste-rapports">
-  <h2>Liste des rapports</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Titre</th>
-        <th>Date</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let r of rapports">
-        <td>{{ r.titre }}</td>
-        <td>{{ r.date }}</td>
-        <td><a [href]="r.url" target="_blank">Voir</a></td>
-      </tr>
-    </tbody>
-  </table>
+  <h2 class="text-xl font-semibold mb-3">Liste des rapports</h2>
+  <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+    <table class="min-w-full text-sm">
+      <thead class="bg-slate-50 text-slate-600">
+        <tr>
+          <th class="text-left px-4 py-2 font-medium">Titre</th>
+          <th class="text-left px-4 py-2 font-medium">Date</th>
+          <th class="text-left px-4 py-2 font-medium">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of rapports" class="border-t">
+          <td class="px-4 py-2">{{ r.titre }}</td>
+          <td class="px-4 py-2">{{ r.date }}</td>
+          <td class="px-4 py-2">
+            <a [routerLink]="r.url" class="text-sky-600 hover:underline">Voir</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

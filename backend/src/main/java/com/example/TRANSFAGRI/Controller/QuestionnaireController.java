@@ -125,7 +125,7 @@ public class QuestionnaireController {
 
     // CNEF/PASNFI can list answers for aggregation
     @GetMapping("/{id}/answers")
-    @PreAuthorize("hasRole('CNEF') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('CNEF') or hasRole('ADMIN') or hasRole('PASNFI')")
     public ResponseEntity<java.util.List<QuestionnaireAnswer>> listAnswers(@PathVariable Long id) {
         // optionally validate questionnaire exists
         if (questionnaireRepository.existsById(id)) {

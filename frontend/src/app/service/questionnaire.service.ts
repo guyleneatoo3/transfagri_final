@@ -54,4 +54,9 @@ export class QuestionnaireService {
   answeredByMe(questionnaireId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/${questionnaireId}/answeredByMe`, { headers: this.authHeaders() });
   }
+
+  // Récupère les réponses d'un questionnaire (CNEF/ADMIN/PASNFI)
+  answers(questionnaireId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${questionnaireId}/answers`, { headers: this.authHeaders() });
+  }
 }

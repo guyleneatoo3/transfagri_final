@@ -51,6 +51,7 @@ public enum Role {
     // Optionally serialize as ROLE_ prefixed string
     @JsonValue
     public String toJson() {
-        return "ROLE_" + this.name();
+        // store as plain name (e.g. "ADMIN") to keep DB column small and avoid truncation
+        return this.name();
     }
 }

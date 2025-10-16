@@ -15,6 +15,8 @@ export class EmfRepondreQuestionnaireComponent {
   selected: Questionnaire | null = null;
   answers: any = {};
   message = '';
+  // Map of questionnaireId -> already answered by current EMF
+  answeredById: Record<number, boolean> = {};
   parsedQuestions: Array<{
     key: string;
     index: number;
@@ -33,10 +35,30 @@ export class EmfRepondreQuestionnaireComponent {
   }
 
   refresh() {
-    this.qs.listShared().subscribe(list => this.shared = list);
+    this.qs.listShared().subscribe(list => {
+      this.shared = list;
+      // Prefetch answered status per questionnaire
+      this.answeredById = {};
+      list.forEach(q => {
+        if (q.id) {
+          this.qs.answeredByMe(q.id).subscribe({
+            next: (ans) => { if (q.id != null) this.answeredById[q.id] = !!ans; },
+            error: () => {}
+          });
+        }
+      });
+    });
   }
 
   open(q: Questionnaire) {
+    // If already answered, don't open the form
+    if (q.id && this.answeredById[q.id]) {
+      this.message = 'Questionnaire envoyé avec succès.';
+      this.selected = null;
+      return;
+    }
+    // Clear any previous success/error message for a fresh attempt
+    this.message = '';
     this.selected = q;
     // Initialize answers structure
     try {
@@ -83,6 +105,10 @@ export class EmfRepondreQuestionnaireComponent {
           next: (ans) => {
             if (ans) {
               this.message = 'Questionnaire envoyé avec succès.';
+              // reflect state in the list map too
+              if (q.id != null) this.answeredById[q.id] = true;
+              // close the form since it was already answered
+              this.selected = null;
             }
           },
           error: () => {}
@@ -112,12 +138,14 @@ export class EmfRepondreQuestionnaireComponent {
     this.qs.submitAnswers(this.selected.id, { answers: this.answers }).subscribe({
       next: () => {
         this.message = 'Questionnaire envoyé avec succès.';
+        if (this.selected?.id != null) this.answeredById[this.selected.id] = true;
         this.selected = null;
         this.refresh();
       },
       error: (err) => {
         if (err && err.status === 409) {
           this.message = 'Questionnaire envoyé avec succès.';
+          if (this.selected?.id != null) this.answeredById[this.selected.id] = true;
           this.selected = null;
           this.refresh();
         } else {

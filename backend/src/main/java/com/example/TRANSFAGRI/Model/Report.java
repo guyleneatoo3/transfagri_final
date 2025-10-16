@@ -22,6 +22,10 @@ public class Report {
     @Column(columnDefinition = "LONGTEXT")
     private String contentJson; // Aggregated JSON summary
 
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String aiSummary; // Optional: AI-generated textual summary
+
     public Report() {}
 
     public Report(String title, Questionnaire questionnaire, LocalDateTime generatedAt, String contentJson) {
@@ -40,4 +44,7 @@ public class Report {
     public void setGeneratedAt(LocalDateTime generatedAt) { this.generatedAt = generatedAt; }
     public String getContentJson() { return contentJson; }
     public void setContentJson(String contentJson) { this.contentJson = contentJson; }
+
+    public String getAiSummary() { return aiSummary; }
+    public void setAiSummary(String aiSummary) { this.aiSummary = aiSummary; }
 }

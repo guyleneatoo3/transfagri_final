@@ -1,0 +1,16 @@
+<div class="max-w-xl mx-auto bg-white rounded-xl border border-slate-200 p-4">
+  <h2 class="text-xl font-semibold mb-3">Mon profil</h2>
+  <div class="grid gap-3">
+    <label class="text-sm">Nom
+      <input class="input" [(ngModel)]="nom" name="nom" />
+    </label>
+    <label class="text-sm">Email
+      <input class="input" [(ngModel)]="email" name="email" />
+    </label>
+    <label class="text-sm">Rôle
+      <input class="input" [(ngModel)]="role" name="role" disabled />
+    </label>
+    <button (click)="save()" class="rounded bg-sky-600 text-white px-4 py-2 text-sm">Enregistrer</button>
+    <div class="text-emerald-700" *ngIf="message">{{ message }}</div>
+  </div>
+</div>

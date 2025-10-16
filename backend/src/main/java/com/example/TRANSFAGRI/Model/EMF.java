@@ -1,6 +1,5 @@
 package com.example.TRANSFAGRI.Model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -16,13 +15,10 @@ public class EMF {
     private String denomination;
     private String localisation;
 
-    @JsonProperty("Dirigeant")
     private String dirigeant;
 
-    @JsonProperty("Numero_d_agreement")
     private String numeroDAgrement;
 
-    @JsonProperty("NumeroCNC")
     private String numeroCNC;
 
     private String email;

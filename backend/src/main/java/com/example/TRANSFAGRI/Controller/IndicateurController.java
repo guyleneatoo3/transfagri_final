@@ -21,12 +21,36 @@ public class IndicateurController {
         return new ResponseEntity<>(savedIndicateur, HttpStatus.CREATED);
     }
     
+    @GetMapping("/{id}")
+    public ResponseEntity<Indicateur> getIndicateur(@PathVariable Long id) {
+        return indicateurService.getIndicateurById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping
     public List<Indicateur> getAllIndicateurs(@RequestParam(required = false) String search) {
         if (search != null && !search.isBlank()) {
             return indicateurService.searchIndicateurs(search);
         }
         return indicateurService.getAllIndicateurs();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> countIndicateurs() {
+        return ResponseEntity.ok(indicateurService.countIndicateurs());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Indicateur> update(@PathVariable Long id, @RequestBody Indicateur payload) {
+        Indicateur updated = indicateurService.updateIndicateur(id, payload);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        indicateurService.deleteIndicateur(id);
+        return ResponseEntity.noContent().build();
     }
     @PostMapping("/generer-questionnaire")
     public ResponseEntity<String> genererQuestionnairePourEMF(@RequestBody String description) {

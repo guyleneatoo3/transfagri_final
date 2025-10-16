@@ -1,40 +1,61 @@
-<div class="gestion-indicateurs">
-  <h2>Gestion des indicateurs</h2>
-  <div class="indicateur-list">
-    <table>
-      <thead>
-        <tr>
-          <th>Libellé</th>
-          <th>Description</th>
-          <th>Actions</th>
+<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl md:text-2xl font-semibold text-slate-800">Gestion des indicateurs</h2>
+  </div>
+
+  <div class="mt-5 rounded-xl border border-slate-200 overflow-x-auto">
+    <table class="min-w-full divide-y divide-slate-200">
+      <thead class="bg-slate-50">
+        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500 sticky top-0">
+          <th class="px-4 py-3">Libellé</th>
+          <th class="px-4 py-3">Description</th>
+          <th class="px-4 py-3">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let indicateur of indicateurs">
-          <td>{{ indicateur.libelle }}</td>
-          <td>{{ indicateur.description }}</td>
-          <td>
-            <button (click)="selectIndicateur(indicateur)">Modifier</button>
-            <button (click)="deleteIndicateur(indicateur)">Supprimer</button>
+      <tbody class="divide-y divide-slate-100 bg-white">
+        <tr *ngFor="let indicateur of indicateurs" class="hover:bg-slate-50/70">
+          <td class="px-4 py-3 font-medium text-slate-800">{{ indicateur.nom }}</td>
+          <td class="px-4 py-3 text-slate-700">{{ indicateur.description }}</td>
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-2">
+              <button (click)="selectIndicateur(indicateur)" class="rounded-md border border-emerald-600/20 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100">Modifier</button>
+              <button (click)="deleteIndicateur(indicateur)" class="rounded-md border border-red-600/20 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100">Supprimer</button>
+            </div>
           </td>
+        </tr>
+        <tr *ngIf="!indicateurs?.length">
+          <td colspan="3" class="px-4 py-6 text-center text-sm text-slate-500">Aucun indicateur</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div class="indicateur-form">
-    <h3 *ngIf="!isEditing">Ajouter un indicateur</h3>
-    <h3 *ngIf="isEditing">Modifier l'indicateur</h3>
-    <form (ngSubmit)="isEditing ? updateIndicateur() : addIndicateur()">
-      <input [(ngModel)]="getFormIndicateur().libelle" name="libelle" placeholder="Libellé" required />
-      <input [(ngModel)]="getFormIndicateur().description" name="description" placeholder="Description" required />
-      <button type="submit">{{ isEditing ? 'Mettre à jour' : 'Ajouter' }}</button>
-      <button type="button" (click)="clearSelection()" *ngIf="isEditing">Annuler</button>
-    </form>
+
+  <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+    <!-- Ajout -->
+    <div class="rounded-xl border border-slate-200 p-4">
+      <h3 class="mb-3 text-base font-semibold text-slate-800">Ajouter un indicateur</h3>
+      <form (ngSubmit)="addIndicateur()" class="grid grid-cols-1 gap-3">
+        <input [(ngModel)]="newIndicateur.nom" name="nom" placeholder="Libellé" required class="input" />
+        <input [(ngModel)]="newIndicateur.description" name="description" placeholder="Description" required class="input" />
+        <div>
+          <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">Ajouter</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Edition -->
+    <div class="rounded-xl border border-slate-200 p-4" *ngIf="isEditing">
+      <h3 class="mb-3 text-base font-semibold text-slate-800">Modifier l'indicateur</h3>
+      <form (ngSubmit)="updateIndicateur()" class="grid grid-cols-1 gap-3">
+        <input [(ngModel)]="selectedIndicateur!.nom" name="nom_edit" placeholder="Libellé" required class="input" />
+        <input [(ngModel)]="selectedIndicateur!.description" name="description_edit" placeholder="Description" required class="input" />
+        <div class="flex items-center gap-2">
+          <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">Mettre à jour</button>
+          <button type="button" (click)="clearSelection()" class="rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200">Annuler</button>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="mistral-section">
-    <h3>Générer un questionnaire (API Mistral)</h3>
-    <textarea [(ngModel)]="mistralPrompt" name="mistralPrompt" placeholder="Décris l'indicateur ou le besoin..."></textarea>
-    <button (click)="genererQuestionnaire()">Générer</button>
-    <div *ngIf="mistralResponse">{{ mistralResponse }}</div>
-  </div>
+
+  
 </div>

@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthenticationRequest } from '../models/authenticationrequest.model';
 import { AuthenticationResponse } from '../models/authenticationresponse.model';
 import { RegisterRequest } from '../models/registerrequest.model';
-import { Role } from '../models/registerrequest.model';
 
 interface AuthResponse {
   token: string;
@@ -20,23 +20,19 @@ export class AuthService {
   utilisateurname$ = this.utilisateurnameSubject.asObservable();
   private nameSubject = new BehaviorSubject<string | null>(null);
   name$ = this.nameSubject.asObservable();
-  private roleSubject = new BehaviorSubject<Role | null>(null);  // Nouveau sujet pour le rôle
+  private roleSubject = new BehaviorSubject<string | null>(null);  // Nouveau sujet pour le rôle
   role$ = this.roleSubject.asObservable();  // Observable pour le rôle
 
   
   
   
-
-  constructor(private http: HttpClient) {
-    
-    
-   }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('accessToken');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+    if (!isPlatformBrowser(this.platformId)) return new HttpHeaders();
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('accessToken') : null;
+    if (!token) return new HttpHeaders();
+    return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   }
 
   register(request: RegisterRequest): Observable<AuthenticationResponse> {
@@ -48,23 +44,33 @@ export class AuthService {
     return this.http.post<AuthenticationResponse>(`${this.apiUrl}/authenticate`, request)
       .pipe(
         tap(response => {
-          // Stocker le token JWT dans le localStorage ou sessionStorage
-          localStorage.setItem('accessToken', response.token);
-          const decodedToken = this.decodeToken(response.token);
-          const utilisateurname = decodedToken.sub;
-          const role = response.role as Role; 
-          localStorage.setItem('utilisateurname', utilisateurname);
-          localStorage.setItem('role', role);  
-          
-          this.utilisateurnameSubject.next(utilisateurname); 
-          this.roleSubject.next(role);  
-          localStorage.setItem('name', response.name);  // Stocker le nom dans le localStorage
-          this.nameSubject.next(response.name);  // Mettre à jour le BehaviorSubject avec le nom
+          if (isPlatformBrowser(this.platformId)) {
+            // Stocker le token JWT dans le localStorage ou sessionStorage uniquement côté navigateur
+            localStorage.setItem('accessToken', response.token);
+            const decodedToken = this.decodeToken(response.token);
+            const utilisateurname = decodedToken?.sub ?? null;
+            let role = (response.role as unknown as string) || '';
+            role = role.toUpperCase();
+            if (role.startsWith('ROLE_')) role = role.replace('ROLE_', '');
+            if (utilisateurname) {
+              localStorage.setItem('utilisateurname', utilisateurname);
+              this.utilisateurnameSubject.next(utilisateurname);
+            }
+            if (role) {
+              localStorage.setItem('role', role);
+              this.roleSubject.next(role);
+            }
+            if (response.name) {
+              localStorage.setItem('name', response.name);
+              this.nameSubject.next(response.name);
+            }
+          }
         })
       );
   }
 
   logout(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     // Supprimer les tokens du localStorage ou sessionStorage lors de la déconnexion
     localStorage.removeItem('accessToken');
     localStorage.removeItem('name');
@@ -85,12 +91,16 @@ export class AuthService {
     return null;
   }
 }
-hasRole(role: Role): boolean {
-  const storedRole = localStorage.getItem('role') as Role;
-  return storedRole === role;
+hasRole(role: string): boolean {
+  if (!isPlatformBrowser(this.platformId)) return false;
+  const storedRoleRaw = localStorage.getItem('role') || '';
+  const stored = storedRoleRaw.toUpperCase().replace(/^ROLE_/, '');
+  const target = role.toUpperCase().replace(/^ROLE_/, '');
+  return stored === target;
 }
 
 isAuthenticated(): boolean {
+  if (!isPlatformBrowser(this.platformId)) return false;
   return !!localStorage.getItem('accessToken');
 }
 

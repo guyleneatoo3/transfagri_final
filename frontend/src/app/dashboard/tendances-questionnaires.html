@@ -1,0 +1,31 @@
+<div class="p-4">
+  <h2 class="text-xl font-semibold mb-3">Tendances des réponses aux questionnaires</h2>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="rounded bg-white shadow p-3 lg:col-span-1">
+      <h3 class="font-medium mb-2">Questionnaires</h3>
+      <ul class="divide-y">
+        <li *ngFor="let q of questionnaires" class="py-2 flex items-center justify-between">
+          <div>
+            <div class="font-medium">{{ q.titre }}</div>
+            <div class="text-xs text-gray-500">Lancé le: {{ q.sharedAt || q.createdAt }}</div>
+          </div>
+          <div class="flex gap-2">
+            <button class="px-3 py-1 rounded bg-blue-600 text-white" (click)="select(q)">Voir tendance</button>
+            <button class="px-3 py-1 rounded bg-emerald-600 text-white" (click)="genererRapport(q)">Générer rapport</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="rounded bg-white shadow p-3 lg:col-span-2" *ngIf="selected as sel">
+      <h3 class="font-medium mb-2">Tendance: {{ sel.titre }}</h3>
+      <div *ngIf="loading" class="text-sm text-gray-500">Chargement…</div>
+      <div *ngIf="error" class="text-sm text-rose-600">{{ error }}</div>
+      <div *ngIf="!loading && !error" class="h-56 flex items-center justify-center text-gray-400">
+        [Graphique synthèse: {{ stats.distribution[0] || 0 }} réponses]
+      </div>
+      <div class="mt-3">
+        <button class="px-3 py-1 rounded bg-indigo-600 text-white" (click)="sel.id ? resumerAvecIA(sel.id) : null">Résumer avec l'IA</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,4 @@
+// Legacy Indicateurs component (no backend). Kept for reference; not used in router.
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

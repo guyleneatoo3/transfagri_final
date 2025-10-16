@@ -1,1 +1,5 @@
 /* Styles pour l'application TransfAgri */
+
+/* Minimal helpers when Tailwind isn't bundled locally */
+.input { width: 100%; border: 1px solid rgba(148,163,184,.6); border-radius: .5rem; padding: .5rem .75rem; font-size: .9rem; background: #fff; color: #0f172a; }
+.input:focus { outline: none; box-shadow: 0 0 0 3px rgba(16,185,129,.35); border-color: rgba(16,185,129,.4); }

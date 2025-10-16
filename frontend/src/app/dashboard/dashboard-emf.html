@@ -1,61 +1,28 @@
-<div class="dashboard-cnef-container" style="display:flex;min-height:100vh;background:#f8fafc;">
-  <!-- Sidebar -->
-  <aside style="width:220px;background:#212529;color:#faf9f9;display:flex;flex-direction:column;align-items:center;padding:2rem 0;box-shadow:2px 0 8px rgba(0,0,0,0.04);">
-    <h3 style="margin-bottom:2rem;font-size:1.3rem;letter-spacing:1px;">CNEF Menu</h3>
-    <nav style="width:100%;">
-      <ul style="list-style:none;padding:0;width:100%;">
-        <li><a href="/dashboard/cnef/emf" style="display:block;padding:12px 24px;color:#130000;text-decoration:none;border-radius:6px;margin-bottom:8px;background:#0d6efd;">Gérer les EMF</a></li>
-        <li><a href="/dashboard/cnef/indicateurs" style="display:block;padding:12px 24px;color:#130000;text-decoration:none;border-radius:6px;margin-bottom:8px;background:#ffc107;">Indicateurs globaux</a></li>
-        <li><a href="/dashboard/cnef/questionnaires" style="display:block;padding:12px 24px;color:#130000;text-decoration:none;border-radius:6px;margin-bottom:8px;background:#198754;">Questionnaires</a></li>
-        
-        <li><a href="/dashboard/cnef/Formations" style="display:block;padding:12px 24px;color:#130000;text-decoration:none;border-radius:6px;background:#dc3545;">Formations</a></li>
-        <li><a href="/dashboard/cnef/formations" style="display:block;padding:12px 24px;color:#fff;text-decoration:none;border-radius:6px;background:#dc3545;">Activités</a></li>
-      </ul>
-    </nav>
-    <div style="margin-top:auto;padding:1rem 0;font-size:13px;color:#adb5bd;">Connecté en tant que <strong>EMF</strong></div>
-  </aside>
-  <!-- Main content -->
-  <div style="flex:1;display:flex;flex-direction:column;">
-    <!-- Header -->
-    <header style="background:#fff;padding:1.5rem 2rem;box-shadow:0 2px 8px rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;">
-      <h2 style="margin:0;font-size:2rem;color:#212529;">Dashboard EMF</h2>
-       <a href="/hacceuil">Accueil</a>  
-      <a href="/apropos">À Propos  TRANSFAGRI</a>
-        <a href="/contact">Nous contacter</a>
-        <a href="/login">Connexion</a>
-      <input type="search" placeholder="Rechercher..." style="padding:8px 16px;border-radius:6px;border:1px solid #e5e7eb;width:220px;" />
-    </header>
-    <!-- Cards -->
-    <section style="display:flex;gap:2rem;padding:2rem 2rem 0 2rem;flex-wrap:wrap;">
-      <div style="background:#0d6efd;color:#fff;flex:1;min-width:220px;padding:1.2rem 1.5rem;border-radius:1rem;box-shadow:0 2px 8px rgba(13,110,253,0.08);">
-        <h4 style="margin:0 0 8px 0;font-size:1.1rem;">Gérer les EMF</h4>
-        <div style="font-size:2rem;font-weight:bold;">12</div>
-        <a href="/dashboard/emf/gestion" style="color:#fff;text-decoration:underline;font-size:13px;">Voir EMF</a>
-      </div>
-      <div style="background:#ffc107;color:#212529;flex:1;min-width:220px;padding:1.2rem 1.5rem;border-radius:1rem;box-shadow:0 2px 8px rgba(255,193,7,0.08);">
-        <h4 style="margin:0 0 8px 0;font-size:1.1rem;">Indicateurs</h4>
-        <div style="font-size:2rem;font-weight:bold;">8</div>
-        <a href="/dashboard/cnef/indicateurs" style="color:#212529;text-decoration:underline;font-size:13px;"></a>
-      </div>
-
-      <div style="background:#39f8df59;color:#212529;flex:1;min-width:220px;padding:1.2rem 1.5rem;border-radius:1rem;box-shadow:0 2px 8px rgba(255,193,7,0.08);">
-        <h4 style="margin:0 0 8px 0;font-size:1.1rem;">Formations</h4>
-        <div style="font-size:2rem;font-weight:bold;">8</div>
-        <a href="/dashboard/cnef/indicateurs" style="color:#212529;text-decoration:underline;font-size:13px;"></a>
-      </div>
-
-      <div style="background:#198754;color:#fff;flex:1;min-width:220px;padding:1.2rem 1.5rem;border-radius:1rem;box-shadow:0 2px 8px rgba(25,135,84,0.08);">
-        <h4 style="margin:0 0 8px 0;font-size:1.1rem;">Questionnaires</h4>
-        <div style="font-size:2rem;font-weight:bold;">5</div>
-        <a href="/dashboard/cnef/questionnaires" style="color:#fff;text-decoration:underline;font-size:13px;"></a>
-      </div>
-      <div style="background:#dc3545;color:#fff;flex:1;min-width:220px;padding:1.2rem 1.5rem;border-radius:1rem;box-shadow:0 2px 8px rgba(220,53,69,0.08);">
-        <h4 style="margin:0 0 8px 0;font-size:1.1rem;">Activités</h4>
-        <div style="font-size:2rem;font-weight:bold;">3</div>
-        <a href="/dashboard/cnef/activites" style="color:#fff;text-decoration:underline;font-size:13px;"></a>
-      </div>
-    </section>
-   
+<app-sidebar-layout>
+  <section class="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4" *ngIf="!isChildView">
+    <button class="rounded-xl p-4 text-left shadow bg-amber-400 text-slate-900 hover:brightness-95" routerLink="/dashboard/emf/questionnaire">
+      <div class="font-semibold">Indicateurs</div>
+      <div class="text-3xl font-extrabold">{{ loading ? '...' : counts.indicateurs }}</div>
+      <div class="underline text-sm">Voir détails →</div>
+    </button>
+    <button class="rounded-xl p-4 text-left shadow bg-indigo-500 text-white hover:brightness-95" routerLink="/dashboard/emf/questionnaire">
+      <div class="font-semibold">Questionnaires</div>
+      <div class="text-3xl font-extrabold">{{ loading ? '...' : counts.questionnaires }}</div>
+      <div class="underline text-sm">Voir détails →</div>
+    </button>
+    <button class="rounded-xl p-4 text-left shadow bg-rose-500 text-white hover:brightness-95" routerLink="/dashboard/emf/formations">
+      <div class="font-semibold">Formations</div>
+      <div class="text-3xl font-extrabold">{{ loading ? '...' : counts.activites }}</div>
+      <div class="underline text-sm">Voir détails →</div>
+    </button>
+  </section>
+  <section class="mt-4" *ngIf="!isChildView">
+    <app-kpi-charts [emfs]="counts.emfs" [indicateurs]="counts.indicateurs" [questionnaires]="counts.questionnaires" [activites]="counts.activites"></app-kpi-charts>
+    <app-extra-charts [emfs]="counts.emfs" [indicateurs]="counts.indicateurs" [questionnaires]="counts.questionnaires" [activites]="counts.activites"></app-extra-charts>
+  </section>
+  <section *ngIf="isChildView">
+    <div class="max-w-6xl mx-auto">
+      <router-outlet></router-outlet>
     </div>
-  </div>
-
+  </section>
+</app-sidebar-layout>

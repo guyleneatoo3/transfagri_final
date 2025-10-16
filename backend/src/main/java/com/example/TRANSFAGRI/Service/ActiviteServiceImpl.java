@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ActiviteServiceImpl implements ActiviteService {
@@ -31,5 +30,10 @@ public class ActiviteServiceImpl implements ActiviteService {
     @Override
     public void delete(Long id) {
         activiteRepository.deleteById(id);
+    }
+
+    @Override
+    public long count() {
+        return activiteRepository.count();
     }
 }

@@ -1,6 +1,6 @@
-package com.example.TRANSFAGRI.dto;
+package com.example.TRANSFAGRI.Dto;
 
-import com.example.TRANSFAGRI.dto.Role;
+import com.example.TRANSFAGRI.Dto.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

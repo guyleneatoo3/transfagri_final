@@ -6,6 +6,28 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Tailwind CSS via CDN (dev usage) -->
+  <script>
+    // Must be defined BEFORE loading the CDN script
+    window.tailwind = window.tailwind || {};
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            beac: {
+              blue: '#003366',
+              gold: '#C5A100',
+              light: '#F5F7FA',
+              dark: '#0B1A2A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js for simple charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <app-root></app-root>

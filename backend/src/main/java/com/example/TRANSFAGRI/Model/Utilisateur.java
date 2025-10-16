@@ -23,6 +23,7 @@ public class Utilisateur implements UserDetails {
     private String motdepasse;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private Role role;
 
     @Override
@@ -64,8 +65,11 @@ public class Utilisateur implements UserDetails {
     public Long getIdutilisateur() { return idutilisateur; }
     public String getEmail() { return email; }
     public String getMotdepasse() { return motdepasse; }
+    public String getNom() { return nom; }
 
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
     public void setNom(String nom) { this.nom = nom; }
+    public void setEmail(String email) { this.email = email; }
+    public void setMotdepasse(String motdepasse) { this.motdepasse = motdepasse; }
 }

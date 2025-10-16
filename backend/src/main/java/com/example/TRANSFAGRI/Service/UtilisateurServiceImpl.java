@@ -1,13 +1,12 @@
 package com.example.TRANSFAGRI.Service;
-import com.example.TRANSFAGRI.dto.ChangePasswordRequest;
-import com.example.TRANSFAGRI.dto.UtilisateurDto;
-import com.example.TRANSFAGRI.dto.UtilisateurResponse;
+import com.example.TRANSFAGRI.Dto.ChangePasswordRequest;
+import com.example.TRANSFAGRI.Dto.UtilisateurDto;
+import com.example.TRANSFAGRI.Dto.UtilisateurResponse;
 import com.example.TRANSFAGRI.Model.Utilisateur;
 import com.example.TRANSFAGRI.Model.Role;
 import com.example.TRANSFAGRI.Repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

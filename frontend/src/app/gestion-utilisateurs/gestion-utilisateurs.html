@@ -1,84 +1,72 @@
+<h6 class="page-title">👤 Gestion des utilisateurs</h6>
 
-<nav>
-  <div class="nav-content">
-    <a class="nav-logo" href="/accueil">TRANSFAGRI</a>
-    <div class="nav-links">
-      <a href="/accueil">Accueil</a>
-      <a href="/dashboard">Tableau de Bord</a>
-      <a href="/rapports">Rapports</a>
-      <a href="/apropos">À Propos</a>
-    </div>
-    <a href="/login" class="nav-btn">Connexion</a>
-  </div>
-</nav>
-
-<h6 class="page-title">🏦 Gestion des EMF</h6>
+<!-- Filtres par rôle -->
+<div class="card" style="padding:12px; margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap;">
+  <button class="btn" [class.btn-primary]="!selectedRole" (click)="setRoleFilter(null)">Tous</button>
+  <button class="btn" [class.btn-primary]="selectedRole==='ADMIN'" (click)="setRoleFilter('ADMIN')">Admins</button>
+  <button class="btn" [class.btn-primary]="selectedRole==='CNEF'" (click)="setRoleFilter('CNEF')">CNEF</button>
+  <button class="btn" [class.btn-primary]="selectedRole==='EMF'" (click)="setRoleFilter('EMF')">EMF</button>
+  <button class="btn" [class.btn-primary]="selectedRole==='PASNFI'" (click)="setRoleFilter('PASNFI')">PASNFI</button>
+</div>
 
 <!-- Formulaire de création -->
 <div class="card form-section">
-  <h3 class="section-title">➕ Ajouter une EMF</h3>
+  <h3 class="section-title">➕ Ajouter un utilisateur</h3>
   <div class="form-grid">
-    <input [(ngModel)]="nouvelUtilisateur.denomination" placeholder="Dénomination" />
-    <input [(ngModel)]="nouvelUtilisateur.localisation" placeholder="Localisation" />
-    <input [(ngModel)]="nouvelUtilisateur.Dirigeant" placeholder="Nom du Dirigeant" />
-    <input [(ngModel)]="nouvelUtilisateur.Numero_d_agreement" placeholder="N° d’agrément" />
-    <input [(ngModel)]="nouvelUtilisateur.d_imatriculation_au_CNC" placeholder="N° CNC" />
+    <input [(ngModel)]="nouvelUtilisateur.nom" placeholder="Nom" />
     <input [(ngModel)]="nouvelUtilisateur.email" placeholder="Email" />
+    <input [(ngModel)]="nouvelUtilisateur.motdepasse" placeholder="Mot de passe" type="password" />
+    <select [(ngModel)]="nouvelUtilisateur.role">
+      <option value="ROLE_ADMIN">ADMIN</option>
+      <option value="ROLE_CNEF">CNEF</option>
+      <option value="ROLE_EMF">EMF</option>
+      <option value="ROLE_PASNFI">PASNFI</option>
+    </select>
     <button class="btn btn-primary" (click)="creerUtilisateur()">Créer</button>
   </div>
-</div>
-
-<!-- Barre de recherche avec bouton de réinitialisation -->
-<div class="search-section card">
-  <div class="search-inline-wrapper">
-    <input
-      [(ngModel)]="recherche"
-      class="search-input-inline"
-      placeholder="🔍 Rechercher une EMF..." />
-    <button *ngIf="recherche" (click)="recherche = ''" class="btn-reset" title="Réinitialiser la recherche">
-      🔄
-    </button>
+  <div class="text-success" *ngIf="message">{{ message }}</div>
+  <div class="text-danger" *ngIf="!message && utilisateurs.length===0">Aucun utilisateur</div>
+  <div class="search-inline-wrapper" style="margin-top:8px;">
+    <input [(ngModel)]="recherche" class="search-input-inline" placeholder="🔍 Rechercher (nom, email, rôle)" />
+    <button *ngIf="recherche" (click)="recherche = ''" class="btn-reset" title="Réinitialiser">🔄</button>
   </div>
 </div>
-
 
 <!-- Liste des utilisateurs -->
 <div class="card table-section">
-  <h3 class="section-title">📋 Liste des EMF</h3>
+  <h3 class="section-title">📋 Liste des utilisateurs</h3>
   <table class="emf-table">
     <thead>
       <tr>
-        <th>Dénomination</th>
-        <th>Localisation</th>
-        <th>Dirigeant</th>
-        <th>N° Agrément</th>
-        <th>N° CNC</th>
+        <th>Nom</th>
         <th>Email</th>
+        <th>Rôle</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let utilisateur of utilisateursFiltres">
-        <ng-container *ngIf="utilisateurEnEdition?.id !== utilisateur.id; else edition">
-          <td>{{ utilisateur.denomination }}</td>
-          <td>{{ utilisateur.localisation }}</td>
-          <td>{{ utilisateur.Dirigeant }}</td>
-          <td>{{ utilisateur.Numero_d_agreement }}</td>
-          <td>{{ utilisateur.d_imatriculation_au_CNC }}</td>
+        <ng-container *ngIf="utilisateurEnEdition?.idutilisateur !== utilisateur.idutilisateur; else edition">
+          <td>{{ utilisateur.nom }}</td>
           <td>{{ utilisateur.email }}</td>
+          <td>{{ utilisateur.role }}</td>
           <td>
             <button class="btn btn-edit" (click)="modifierUtilisateur(utilisateur)">✏️</button>
-            <button class="btn btn-delete" (click)="supprimerUtilisateur(utilisateur.id)">🗑️</button>
+            <button class="btn btn-delete" (click)="supprimerUtilisateur(utilisateur.idutilisateur || utilisateur.id)">🗑️</button>
           </td>
         </ng-container>
 
         <ng-template #edition>
-          <td><input [(ngModel)]="utilisateurEnEdition!.denomination" /></td>
-          <td><input [(ngModel)]="utilisateurEnEdition!.localisation" /></td>
-          <td><input [(ngModel)]="utilisateurEnEdition!.Dirigeant" /></td>
-          <td><input [(ngModel)]="utilisateurEnEdition!.Numero_d_agreement" /></td>
-          <td><input [(ngModel)]="utilisateurEnEdition!.d_imatriculation_au_CNC" /></td>
+          <td><input [(ngModel)]="utilisateurEnEdition!.nom" /></td>
           <td><input [(ngModel)]="utilisateurEnEdition!.email" /></td>
+          <td>
+            <select [(ngModel)]="utilisateurEnEdition!.role">
+              <option value="ROLE_ADMIN">ADMIN</option>
+              <option value="ROLE_CNEF">CNEF</option>
+              <option value="ROLE_EMF">EMF</option>
+              <option value="ROLE_PASNFI">PASNFI</option>
+            </select>
+          </td>
           <td>
             <button class="btn btn-save" (click)="enregistrerModification()">💾</button>
             <button class="btn btn-cancel" (click)="annulerModification()">❌</button>

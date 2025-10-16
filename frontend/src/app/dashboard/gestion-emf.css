@@ -1,1 +1,3 @@
-.gestion-emf { background: #fff; border-radius: 1rem; padding: 2rem; box-shadow: 0 2px 8px rgba(0,128,0,0.08); color: #212529; }
+/* Minimal helpers for non-Tailwind builds. When Tailwind is present, classNames mostly work already. */
+.input { width: 100%; border: 1px solid rgba(148,163,184,.6); border-radius: .5rem; padding: .5rem .75rem; font-size: .9rem; background: #fff; color: #0f172a; }
+.input:focus { outline: none; box-shadow: 0 0 0 3px rgba(16,185,129,.35); border-color: rgba(16,185,129,.4); }

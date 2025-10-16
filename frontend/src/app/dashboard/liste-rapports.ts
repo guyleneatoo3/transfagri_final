@@ -1,12 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReportsService, Report } from '../service/reports.service';
 
-interface Rapport {
-  id: number;
-  titre: string;
-  date: string;
-  url: string;
-}
+interface Rapport { id: number; titre: string; date: string; url: string; }
 
 @Component({
   selector: 'app-liste-rapports',
@@ -16,8 +12,17 @@ interface Rapport {
   imports: [CommonModule]
 })
 export class ListeRapportsComponent {
-  rapports: Rapport[] = [
-    { id: 1, titre: 'Rapport Janvier', date: '01/02/2025', url: '#' },
-    { id: 2, titre: 'Rapport Février', date: '01/03/2025', url: '#' }
-  ];
+  rapports: Rapport[] = [];
+  message = '';
+
+  constructor(private reports: ReportsService) {}
+
+  ngOnInit(): void {
+    this.reports.list().subscribe({
+      next: (list) => {
+        this.rapports = (list || []).map(r => ({ id: r.id, titre: r.title, date: new Date(r.generatedAt).toLocaleDateString(), url: '#' }));
+      },
+      error: () => this.message = 'Impossible de charger les rapports.'
+    });
+  }
 }

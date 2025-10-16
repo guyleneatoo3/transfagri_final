@@ -1,4 +1,4 @@
-package com.example.TRANSFAGRI.dto;
+package com.example.TRANSFAGRI.Dto;
 
 import lombok.Data;
 

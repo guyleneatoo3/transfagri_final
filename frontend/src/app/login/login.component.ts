@@ -31,13 +31,14 @@ export class LoginComponent {
       (response) => {
         // Redirection selon le rôle
         this.successMessage = 'Connexion réussie ! Redirection en cours...';
-        let dashboardRoute = '/haccueil';
+  let dashboardRoute = '/accueil';
         if (response && response.role) {
           // Normalise le rôle (enlève ROLE_ et met en majuscules)
           let role = response.role.toUpperCase();
           if (role.startsWith('ROLE_')) {
             role = role.replace('ROLE_', '');
           }
+          console.log('Rôle de l\'utilisateur :', role);
           switch (role) {
             case 'ADMIN':
               dashboardRoute = '/dashboard/admin';
@@ -52,7 +53,7 @@ export class LoginComponent {
               dashboardRoute = '/dashboard/pasnfi';
               break;
             default:
-              dashboardRoute = '/haccueil';
+              dashboardRoute = '/accueil';
           }
         }
         setTimeout(() => {

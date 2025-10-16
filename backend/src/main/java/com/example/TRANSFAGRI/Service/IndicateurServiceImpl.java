@@ -25,6 +25,11 @@ public class IndicateurServiceImpl implements IndicateurService {
     }
 
     @Override
+    public long countIndicateurs() {
+        return indicateurRepository.count();
+    }
+
+    @Override
     public Optional<Indicateur> getIndicateurById(Long id) {
         return indicateurRepository.findById(id);
     }

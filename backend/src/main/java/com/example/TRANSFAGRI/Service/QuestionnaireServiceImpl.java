@@ -15,4 +15,24 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public Questionnaire save(Questionnaire questionnaire) {
         return questionnaireRepository.save(questionnaire);
     }
+
+    @Override
+    public long count() {
+        return questionnaireRepository.count();
+    }
+
+    @Override
+    public java.util.List<Questionnaire> getAll() {
+        return questionnaireRepository.findAll();
+    }
+
+    @Override
+    public java.util.List<Questionnaire> getShared() {
+        return questionnaireRepository.findBySharedTrue();
+    }
+
+    @Override
+    public java.util.Optional<Questionnaire> getById(Long id) {
+        return questionnaireRepository.findById(id);
+    }
 }

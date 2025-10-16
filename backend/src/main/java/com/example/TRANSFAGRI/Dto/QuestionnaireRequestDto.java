@@ -1,4 +1,4 @@
-package com.example.TRANSFAGRI.dto;
+package com.example.TRANSFAGRI.Dto;
 
 public class QuestionnaireRequestDto {
     private String description;

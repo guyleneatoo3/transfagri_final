@@ -23,31 +23,28 @@ public class TransfagriApplication {
     @Bean
     CommandLineRunner createFakeUsers(UtilisateurRepository utilisateurRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (utilisateurRepository.count() == 0) {
-                utilisateurRepository.save(Utilisateur.builder()
-                        .nom("Admin Principal")
-                        .email("admin@demo.com")
-                        .motdepasse(passwordEncoder.encode("admin123"))
-                        .role(Role.ADMIN)
-                        .build());
-                utilisateurRepository.save(Utilisateur.builder()
-                        .nom("Cnef User")
-                        .email("cnef@demo.com")
-                        .motdepasse(passwordEncoder.encode("cnef123"))
-                        .role(Role.CNEF)
-                        .build());
-                utilisateurRepository.save(Utilisateur.builder()
-                        .nom("Emf User")
-                        .email("emf@demo.com")
-                        .motdepasse(passwordEncoder.encode("emf123"))
-                        .role(Role.EMF)
-                        .build());
-                utilisateurRepository.save(Utilisateur.builder()
-                        .nom("Inspecteur User")
-                        .email("inspecteur@demo.com")
-                        .motdepasse(passwordEncoder.encode("inspect123"))
-                        .role(Role.INSPECTEUR)
-                        .build());
+        if (utilisateurRepository.count() == 0) {
+        Utilisateur admin = new Utilisateur();
+        admin.setNom("Admin Principal");
+        admin.setEmail("admin@demo.com");
+        admin.setMotdepasse(passwordEncoder.encode("admin123"));
+        admin.setRole(Role.ADMIN);
+        utilisateurRepository.save(admin);
+
+        Utilisateur cnef = new Utilisateur();
+        cnef.setNom("Cnef User");
+        cnef.setEmail("cnef@demo.com");
+        cnef.setMotdepasse(passwordEncoder.encode("cnef123"));
+        cnef.setRole(Role.CNEF);
+        utilisateurRepository.save(cnef);
+
+        Utilisateur emf = new Utilisateur();
+        emf.setNom("Emf User");
+        emf.setEmail("emf@demo.com");
+        emf.setMotdepasse(passwordEncoder.encode("emf123"));
+        emf.setRole(Role.EMF);
+        utilisateurRepository.save(emf);
+        // Removed INSPECTEUR seeding as the role is no longer used
             }
         };
     }

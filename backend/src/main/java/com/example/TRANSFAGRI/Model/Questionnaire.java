@@ -16,6 +16,11 @@ public class Questionnaire {
     @CollectionTable(name = "questionnaire_questions", joinColumns = @JoinColumn(name = "questionnaire_id"))
     private List<Question> questions;
     private LocalDateTime createdAt;
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String jsonContent;
+    private Boolean shared = false;
+    private LocalDateTime sharedAt;
 
     public Questionnaire() {}
 
@@ -66,4 +71,11 @@ public class Questionnaire {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public String getJsonContent() { return jsonContent; }
+    public void setJsonContent(String jsonContent) { this.jsonContent = jsonContent; }
+    public Boolean getShared() { return shared; }
+    public void setShared(Boolean shared) { this.shared = shared; }
+    public LocalDateTime getSharedAt() { return sharedAt; }
+    public void setSharedAt(LocalDateTime sharedAt) { this.sharedAt = sharedAt; }
 }

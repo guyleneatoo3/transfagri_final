@@ -1,6 +1,7 @@
 package com.example.TRANSFAGRI.Service;
 
 import com.example.TRANSFAGRI.Model.Question;
+import com.example.TRANSFAGRI.Dto.QuestionGenerationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,7 @@ public class MistralApiServiceImpl implements MistralApiService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public List<Question> generateQuestionnaire(String description) {
+    public QuestionGenerationResponse generateQuestionnaire(String description) {
         String url = "https://api.mistral.ai/v1/chat/completions";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -35,31 +36,43 @@ public class MistralApiServiceImpl implements MistralApiService {
                 description
         );
 
-        String body = "{" +
-                "\"model\": \"mistral-large-latest\"," +
-                "\"messages\": [{\"role\": \"user\", \"content\": " +
-                "\"" + prompt.replace("\"", "\\\"") + "\"}]," +
-                "\"temperature\": 0.7" +
-                "}";
+    // Request structured JSON suitable for QCM + QRO
+    String body = "{" +
+        "\"model\": \"mistral-tiny\"," +
+        "\"response_format\": {\"type\": \"json_object\"}," +
+        "\"messages\": [{\"role\": \"user\", \"content\": " +
+        "\"" + prompt.replace("\"", "\\\"") + "\"}]," +
+        "\"temperature\": 0.2" +
+        "}";
 
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
         try {
-            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+            ResponseEntity<java.util.Map<String, Object>> response = restTemplate.exchange(url, HttpMethod.POST, entity, (Class<java.util.Map<String, Object>>)(Class<?>)java.util.Map.class);
             logger.info("Mistral API response: {}", response.getBody());
 
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                Map choices = ((List<Map>) response.getBody().get("choices")).get(0);
-                Map message = (Map) choices.get("message");
-                String content = (String) message.get("content");
-
-                // Conversion en objets Question (via ton parser)
-                return QuestionParser.parseQuestions(content);
+                Object choicesObj = response.getBody().get("choices");
+                String content = null;
+                if (choicesObj instanceof java.util.List<?> list && !list.isEmpty()) {
+                    Object first = list.get(0);
+                    if (first instanceof java.util.Map<?,?> m) {
+                        Object msg = m.get("message");
+                        if (msg instanceof java.util.Map<?,?> m2) {
+                            Object c = m2.get("content");
+                            if (c instanceof String s) content = s;
+                        }
+                    }
+                }
+                if (content != null) {
+                    java.util.List<Question> questions = QuestionParser.parseQuestions(content);
+                    return new QuestionGenerationResponse(questions, content);
+                }
             }
         } catch (Exception e) {
             logger.error("Erreur lors de l'appel à l'API Mistral", e);
         }
 
-        return new ArrayList<>();
+        return new QuestionGenerationResponse(new ArrayList<>(), null);
     }
 }

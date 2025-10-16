@@ -55,6 +55,10 @@ public abstract class EmfService {
         return emfRepository.findAll();
     }
 
+    public long countEmfs() {
+        return emfRepository.count();
+    }
+
     public Optional<EMF> getEmfById(Long id) {
         return emfRepository.findById(id);
     }

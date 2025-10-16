@@ -15,6 +15,8 @@ export class GestionActiviteComponent implements OnInit {
   selectedActivite: Activite | null = null;
   newActivite: Activite = { nom: '', description: '', emfAssigne: '', statut: 'En cours', dateEcheance: '' };
   isEditing: boolean = false;
+  loading = false;
+  error: string | null = null;
 
   constructor(private activiteService: ActiviteService) {}
 
@@ -23,7 +25,11 @@ export class GestionActiviteComponent implements OnInit {
   }
 
   loadActivites() {
-    this.activiteService.getAll().subscribe(data => this.activites = data);
+    this.loading = true; this.error = null;
+    this.activiteService.getAll().subscribe({
+      next: data => { this.activites = data; this.loading = false; },
+      error: err => { this.error = 'Impossible de charger les activités.'; this.loading = false; console.error(err); }
+    });
   }
 
   selectActivite(activite: Activite) {
@@ -38,28 +44,33 @@ export class GestionActiviteComponent implements OnInit {
   }
 
   addActivite() {
-    this.activiteService.create(this.newActivite).subscribe(() => {
-      this.loadActivites();
-      this.clearSelection();
+    this.loading = true; this.error = null;
+    this.activiteService.create(this.newActivite).subscribe({
+      next: () => { this.loadActivites(); this.clearSelection(); this.loading = false; },
+      error: err => { this.error = 'Échec de l\'ajout.'; this.loading = false; console.error(err); }
     });
   }
 
   updateActivite() {
     if (this.selectedActivite && this.selectedActivite.id) {
-      this.activiteService.update(this.selectedActivite.id, this.selectedActivite).subscribe(() => {
-        this.loadActivites();
-        this.clearSelection();
+      this.loading = true; this.error = null;
+      this.activiteService.update(this.selectedActivite.id, this.selectedActivite).subscribe({
+        next: () => { this.loadActivites(); this.clearSelection(); this.loading = false; },
+        error: err => { this.error = 'Échec de la mise à jour.'; this.loading = false; console.error(err); }
       });
     }
   }
 
   deleteActivite(activite: Activite) {
     if (activite.id) {
-      this.activiteService.delete(activite.id).subscribe(() => this.loadActivites());
+      if (!confirm('Supprimer cette activité ?')) return;
+      this.loading = true; this.error = null;
+      this.activiteService.delete(activite.id).subscribe({
+        next: () => { this.loadActivites(); this.loading = false; },
+        error: err => { this.error = 'Échec de la suppression.'; this.loading = false; console.error(err); }
+      });
     }
   }
 
-  getFormActivite() {
-    return this.isEditing && this.selectedActivite ? this.selectedActivite : this.newActivite;
-  }
+  // plus de getFormActivite; on bind séparément newActivite vs selectedActivite
 }

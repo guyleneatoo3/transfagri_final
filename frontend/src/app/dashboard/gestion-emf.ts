@@ -16,6 +16,8 @@ export class GestionEmfComponent implements OnInit {
   searchTerm: string = '';
   newEmf: EMF = { denomination: '', localisation: '', dirigeant: '', numeroDAgrement: '', numeroCNC: '', email: '' };
   isEditing: boolean = false;
+  loading = false;
+  error: string | null = null;
 
   constructor(private emfService: EmfService) {}
 
@@ -24,7 +26,11 @@ export class GestionEmfComponent implements OnInit {
   }
 
   loadEmfs() {
-    this.emfService.getAll().subscribe(data => this.emfs = data);
+    this.loading = true; this.error = null;
+    this.emfService.getAll().subscribe({
+      next: data => { this.emfs = data; this.loading = false; },
+      error: err => { this.error = 'Impossible de charger les EMF.'; this.loading = false; console.error(err); }
+    });
   }
 
   selectEmf(emf: EMF) {
@@ -39,37 +45,45 @@ export class GestionEmfComponent implements OnInit {
   }
 
   addEmf() {
-    this.emfService.create(this.newEmf).subscribe(() => {
-      this.loadEmfs();
-      this.clearSelection();
+    this.error = null; this.loading = true;
+    this.emfService.create(this.newEmf).subscribe({
+      next: () => { this.loadEmfs(); this.clearSelection(); this.loading = false; },
+      error: err => { this.error = 'Échec de l\'ajout.'; this.loading = false; console.error(err); }
     });
   }
 
   updateEmf() {
     if (this.selectedEmf && this.selectedEmf.id) {
-      this.emfService.update(this.selectedEmf.id, this.selectedEmf).subscribe(() => {
-        this.loadEmfs();
-        this.clearSelection();
+      this.error = null; this.loading = true;
+      this.emfService.update(this.selectedEmf.id, this.selectedEmf).subscribe({
+        next: () => { this.loadEmfs(); this.clearSelection(); this.loading = false; },
+        error: err => { this.error = 'Échec de la mise à jour.'; this.loading = false; console.error(err); }
       });
     }
   }
 
   deleteEmf(emf: EMF) {
     if (emf.id) {
-      this.emfService.delete(emf.id).subscribe(() => this.loadEmfs());
+      if (!confirm('Supprimer cet EMF ?')) return;
+      this.error = null; this.loading = true;
+      this.emfService.delete(emf.id).subscribe({
+        next: () => { this.loadEmfs(); this.loading = false; },
+        error: err => { this.error = 'Échec de la suppression.'; this.loading = false; console.error(err); }
+      });
     }
   }
 
   searchEmf() {
     if (this.searchTerm.trim()) {
-      this.emfService.search(this.searchTerm).subscribe(data => this.emfs = data);
+      this.loading = true; this.error = null;
+      this.emfService.search(this.searchTerm).subscribe({
+        next: data => { this.emfs = data; this.loading = false; },
+        error: err => { this.error = 'Échec de la recherche.'; this.loading = false; console.error(err); }
+      });
     } else {
       this.loadEmfs();
     }
   }
 
-  // Pour le binding des champs du formulaire
-  getFormEmf() {
-    return this.isEditing && this.selectedEmf ? this.selectedEmf : this.newEmf;
-  }
+  // plus de getFormEmf; on bind séparément newEmf vs selectedEmf
 }

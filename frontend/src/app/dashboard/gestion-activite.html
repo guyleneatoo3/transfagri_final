@@ -1,47 +1,91 @@
-<div class="gestion-activite">
-  <h2>Gestion des activités</h2>
-  <div class="activite-list">
-    <table>
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Description</th>
-          <th>EMF Assigné</th>
-          <th>Statut</th>
-          <th>Date d'échéance</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let activite of activites">
-          <td>{{ activite.nom }}</td>
-          <td>{{ activite.description }}</td>
-          <td>{{ activite.emfAssigne }}</td>
-          <td>{{ activite.statut }}</td>
-          <td>{{ activite.dateEcheance }}</td>
-          <td>
-            <button (click)="selectActivite(activite)">Modifier</button>
-            <button (click)="deleteActivite(activite)">Supprimer</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl md:text-2xl font-semibold text-slate-800">Gestion des activités</h2>
   </div>
-  <div class="activite-form">
-    <h3 *ngIf="!isEditing">Ajouter une activité</h3>
-    <h3 *ngIf="isEditing">Modifier l'activité</h3>
-    <form (ngSubmit)="isEditing ? updateActivite() : addActivite()">
-      <input [(ngModel)]="getFormActivite().nom" name="nom" placeholder="Nom" required />
-      <input [(ngModel)]="getFormActivite().description" name="description" placeholder="Description" required />
-      <input [(ngModel)]="getFormActivite().emfAssigne" name="emfAssigne" placeholder="EMF Assigné" required />
-      <select [(ngModel)]="getFormActivite().statut" name="statut">
-        <option value="En cours">En cours</option>
-        <option value="Terminé">Terminé</option>
-        <option value="En retard">En retard</option>
-      </select>
-      <input [(ngModel)]="getFormActivite().dateEcheance" name="dateEcheance" placeholder="Date d'échéance (dd/MM/yyyy)" required />
-      <button type="submit">{{ isEditing ? 'Mettre à jour' : 'Ajouter' }}</button>
-      <button type="button" (click)="clearSelection()" *ngIf="isEditing">Annuler</button>
-    </form>
+
+  <div class="mt-5 rounded-xl border border-slate-200">
+    <div class="overflow-x-auto">
+      <div class="max-h-[420px] overflow-y-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50 sticky top-0 z-[1]">
+            <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <th class="px-4 py-3">Nom</th>
+              <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">EMF Assigné</th>
+              <th class="px-4 py-3">Statut</th>
+              <th class="px-4 py-3">Date d'échéance</th>
+              <th class="px-4 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 bg-white">
+            <tr *ngFor="let activite of activites" class="hover:bg-slate-50/70">
+              <td class="px-4 py-3 font-medium text-slate-800">{{ activite.nom }}</td>
+              <td class="px-4 py-3 text-slate-700">{{ activite.description }}</td>
+              <td class="px-4 py-3 text-slate-700">{{ activite.emfAssigne }}</td>
+              <td class="px-4 py-3">
+                <span class="rounded-full px-2.5 py-1 text-xs font-medium"
+                  [ngClass]="{
+                    'bg-amber-50 text-amber-700 border border-amber-200': activite.statut === 'En cours',
+                    'bg-emerald-50 text-emerald-700 border border-emerald-200': activite.statut === 'Terminé',
+                    'bg-red-50 text-red-700 border border-red-200': activite.statut === 'En retard'
+                  }"
+                >{{ activite.statut }}</span>
+              </td>
+              <td class="px-4 py-3 text-slate-700">{{ activite.dateEcheance }}</td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <button (click)="selectActivite(activite)" class="rounded-md border border-emerald-600/20 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100">Modifier</button>
+                  <button (click)="deleteActivite(activite)" class="rounded-md border border-red-600/20 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100">Supprimer</button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="!activites?.length">
+              <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500">Aucune activité</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+    <!-- Ajout -->
+    <div class="rounded-xl border border-slate-200 p-4">
+      <h3 class="mb-3 text-base font-semibold text-slate-800">Ajouter une activité</h3>
+      <form (ngSubmit)="addActivite()" class="grid grid-cols-1 gap-3">
+        <input [(ngModel)]="newActivite.nom" name="nom" placeholder="Nom" required class="input" />
+        <input [(ngModel)]="newActivite.description" name="description" placeholder="Description" required class="input" />
+        <input [(ngModel)]="newActivite.emfAssigne" name="emfAssigne" placeholder="EMF Assigné" required class="input" />
+        <select [(ngModel)]="newActivite.statut" name="statut" class="input">
+          <option value="En cours">En cours</option>
+          <option value="Terminé">Terminé</option>
+          <option value="En retard">En retard</option>
+        </select>
+        <input [(ngModel)]="newActivite.dateEcheance" name="dateEcheance" placeholder="Date d'échéance (dd/MM/yyyy)" required class="input" />
+        <div>
+          <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">Ajouter</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Edition -->
+    <div class="rounded-xl border border-slate-200 p-4" *ngIf="isEditing">
+      <h3 class="mb-3 text-base font-semibold text-slate-800">Modifier l'activité</h3>
+      <form (ngSubmit)="updateActivite()" class="grid grid-cols-1 gap-3">
+        <input [(ngModel)]="selectedActivite!.nom" name="nom_edit" placeholder="Nom" required class="input" />
+        <input [(ngModel)]="selectedActivite!.description" name="description_edit" placeholder="Description" required class="input" />
+        <input [(ngModel)]="selectedActivite!.emfAssigne" name="emfAssigne_edit" placeholder="EMF Assigné" required class="input" />
+        <select [(ngModel)]="selectedActivite!.statut" name="statut_edit" class="input">
+          <option value="En cours">En cours</option>
+          <option value="Terminé">Terminé</option>
+          <option value="En retard">En retard</option>
+        </select>
+        <input [(ngModel)]="selectedActivite!.dateEcheance" name="dateEcheance_edit" placeholder="Date d'échéance (dd/MM/yyyy)" required class="input" />
+        <div class="flex items-center gap-2">
+          <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">Mettre à jour</button>
+          <button type="button" (click)="clearSelection()" class="rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200">Annuler</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

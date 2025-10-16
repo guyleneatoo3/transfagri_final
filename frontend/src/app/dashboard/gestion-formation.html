@@ -1,6 +1,10 @@
 <div class="gestion-formation">
+  <div class="notice" style="background:#FFF7ED;border:1px solid #FDE68A;color:#92400E;padding:8px 12px;border-radius:6px;margin-bottom:12px;">
+    Espace CNEF — Téléversez ici les documents de formation pour les EMF.
+  </div>
   <h2>Gestion des formations</h2>
   <div class="upload-section">
+    <input type="text" placeholder="Titre du document" [(ngModel)]="title" />
     <input type="file" (change)="onFileSelected($event)" accept="application/pdf" />
     <button (click)="uploadFile()" [disabled]="!selectedFile">Téléverser</button>
     <div *ngIf="uploadProgress > 0 && uploadProgress < 100">Progression : {{ uploadProgress }}%</div>
@@ -9,7 +13,10 @@
   <div class="uploaded-files">
     <h3>Fichiers téléversés</h3>
     <ul>
-      <li *ngFor="let file of uploadedFiles">{{ file }}</li>
+      <li *ngFor="let file of uploadedFiles">
+        {{ file.title }} ({{ file.fileName }})
+        <button (click)="download(file.id)">Télécharger</button>
+      </li>
     </ul>
   </div>
 </div>

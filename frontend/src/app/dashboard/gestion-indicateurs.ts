@@ -13,8 +13,10 @@ import { IndicateurService, Indicateur } from '../service/indicateur';
 export class GestionIndicateursComponent implements OnInit {
   indicateurs: Indicateur[] = [];
   selectedIndicateur: Indicateur | null = null;
-  newIndicateur: Indicateur = { libelle: '', description: '' };
+  newIndicateur: Indicateur = { nom: '', description: '' };
   isEditing: boolean = false;
+  loading = false;
+  error: string | null = null;
   mistralPrompt: string = '';
   mistralResponse: string = '';
 
@@ -25,7 +27,11 @@ export class GestionIndicateursComponent implements OnInit {
   }
 
   loadIndicateurs() {
-    this.indicateurService.getIndicateurs().subscribe(data => this.indicateurs = data);
+    this.loading = true; this.error = null;
+    this.indicateurService.getIndicateurs().subscribe({
+      next: data => { this.indicateurs = data; this.loading = false; },
+      error: err => { this.error = 'Impossible de charger les indicateurs.'; this.loading = false; console.error(err); }
+    });
   }
 
   selectIndicateur(indicateur: Indicateur) {
@@ -36,28 +42,35 @@ export class GestionIndicateursComponent implements OnInit {
   clearSelection() {
     this.selectedIndicateur = null;
     this.isEditing = false;
-    this.newIndicateur = { libelle: '', description: '' };
+  this.newIndicateur = { nom: '', description: '' };
   }
 
   addIndicateur() {
-    this.indicateurService.addIndicateur(this.newIndicateur).subscribe(() => {
-      this.loadIndicateurs();
-      this.clearSelection();
+    this.loading = true; this.error = null;
+    this.indicateurService.addIndicateur(this.newIndicateur).subscribe({
+      next: () => { this.loadIndicateurs(); this.clearSelection(); this.loading = false; },
+      error: err => { this.error = 'Échec de l\'ajout.'; this.loading = false; console.error(err); }
     });
   }
 
   updateIndicateur() {
     if (this.selectedIndicateur && this.selectedIndicateur.id) {
-      this.indicateurService.updateIndicateur(this.selectedIndicateur).subscribe(() => {
-        this.loadIndicateurs();
-        this.clearSelection();
+      this.loading = true; this.error = null;
+      this.indicateurService.updateIndicateur(this.selectedIndicateur).subscribe({
+        next: () => { this.loadIndicateurs(); this.clearSelection(); this.loading = false; },
+        error: err => { this.error = 'Échec de la mise à jour.'; this.loading = false; console.error(err); }
       });
     }
   }
 
   deleteIndicateur(indicateur: Indicateur) {
     if (indicateur.id) {
-      this.indicateurService.deleteIndicateur(indicateur.id).subscribe(() => this.loadIndicateurs());
+      if (!confirm('Supprimer cet indicateur ?')) return;
+      this.loading = true; this.error = null;
+      this.indicateurService.deleteIndicateur(indicateur.id).subscribe({
+        next: () => { this.loadIndicateurs(); this.loading = false; },
+        error: err => { this.error = 'Échec de la suppression.'; this.loading = false; console.error(err); }
+      });
     }
   }
 
@@ -67,7 +80,5 @@ export class GestionIndicateursComponent implements OnInit {
     this.mistralResponse = 'Questionnaire généré pour : ' + this.mistralPrompt;
   }
 
-  getFormIndicateur() {
-    return this.isEditing && this.selectedIndicateur ? this.selectedIndicateur : this.newIndicateur;
-  }
+  // plus de getFormIndicateur; on bind séparément newIndicateur vs selectedIndicateur
 }

@@ -1,8 +1,8 @@
 package com.example.TRANSFAGRI.Service;
 
-import com.example.TRANSFAGRI.dto.ChangePasswordRequest;
-import com.example.TRANSFAGRI.dto.UtilisateurDto;
-import com.example.TRANSFAGRI.dto.UtilisateurResponse;
+import com.example.TRANSFAGRI.Dto.ChangePasswordRequest;
+import com.example.TRANSFAGRI.Dto.UtilisateurDto;
+import com.example.TRANSFAGRI.Dto.UtilisateurResponse;
 import com.example.TRANSFAGRI.Model.Utilisateur;
 
 import java.security.Principal;

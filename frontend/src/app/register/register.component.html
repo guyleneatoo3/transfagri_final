@@ -18,7 +18,7 @@
       <tr *ngFor="let utilisateur of utilisateurs">
         <td>{{ utilisateur.nom }}</td>
         <td>{{ utilisateur.email }}</td>
-        <td>{{ utilisateur.role }}</td>
+  <td>{{ utilisateur.role.replace('ROLE_', '') }}</td>
         <td>{{ utilisateur.motDePasse }}</td>
         <td>
           <button class="register-action-btn edit" (click)="openEditModal(utilisateur)">Modifier</button>

@@ -1,9 +1,7 @@
 package com.example.TRANSFAGRI.Service;
 
-import com.example.TRANSFAGRI.Model.Question;
-
-import java.util.List;
+import com.example.TRANSFAGRI.Dto.QuestionGenerationResponse;
 
 public interface MistralApiService {
-    List<Question> generateQuestionnaire(String description);
+    QuestionGenerationResponse generateQuestionnaire(String description);
 }

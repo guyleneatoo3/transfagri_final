@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import { RegisterRequest } from '../models/registerrequest.model';  
 import { Utilisateur } from '../models/utilisateur.model';
@@ -10,20 +11,26 @@ import { UtilisateurDTO } from '../models/utilisateurDTO';
   providedIn: 'root'
 })
 export class UtilisateurService {
-  addUtilisateur(registerRequest: RegisterRequest) {
-    throw new Error('Method not implemented.');
+  addUtilisateur(registerRequest: RegisterRequest): Observable<any> {
+    // Endpoint public: ne pas envoyer d'en-tête Authorization
+    const authUrl = 'http://localhost:8082/api/v1/auth/register';
+    console.debug('Register Request:', registerRequest);
+    return this.http.post<any>(authUrl, registerRequest);
   }
   
 
-  private apiUrl = 'http://localhost:8082/api/Utilisateurs';
+  private apiUrl = 'http://localhost:8082/api/utilisateurs';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('accessToken');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+    // Avoid accessing localStorage during SSR
+    if (!isPlatformBrowser(this.platformId)) {
+      return new HttpHeaders();
+    }
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('accessToken') : null;
+    if (!token) return new HttpHeaders();
+    return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   }
 
   getAllUtilisateurs(): Observable<UtilisateurDTO[]> {

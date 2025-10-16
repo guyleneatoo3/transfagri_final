@@ -1,8 +1,8 @@
 package com.example.TRANSFAGRI.Configuration;
-// Rename this file to JwtUtil.java
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.example.TRANSFAGRI.Model.Utilisateur;
 import java.nio.charset.StandardCharsets;
@@ -13,9 +13,16 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
+    private final Key key;
+    private final long expirationMs;
 
-    private final String secret = "ma-cle-secrete-256-bits-qui-doit-etre-tres-longue";
-    private final Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    public JwtUtil(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration-ms:86400000}") long expirationMs
+    ) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.expirationMs = expirationMs;
+    }
 
 
 
@@ -25,7 +32,7 @@ public class JwtUtil {
                 .setSubject(utilisateur.getEmail())
                 .claim("role", utilisateur.getRole() != null ? utilisateur.getRole().toString() : null)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 jour
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

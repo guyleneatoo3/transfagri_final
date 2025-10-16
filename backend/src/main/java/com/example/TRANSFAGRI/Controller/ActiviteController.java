@@ -39,4 +39,9 @@ public class ActiviteController {
     public void delete(@PathVariable Long id) {
         activiteService.delete(id);
     }
+
+    @GetMapping("/count")
+    public long count() {
+        return activiteService.count();
+    }
 }

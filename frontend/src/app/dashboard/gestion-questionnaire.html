@@ -1,33 +1,80 @@
-<div class="gestion-questionnaire">
-  <h2>Générer un questionnaire</h2>
-  <form (ngSubmit)="genererQuestionnaire()" style="margin-bottom:2rem;">
-    <div>
-      <label for="titre">Titre :</label>
-      <input id="titre" [(ngModel)]="titre" name="titre" required />
+<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
+  <h2 class="text-xl md:text-2xl font-semibold text-slate-800">Générer un questionnaire</h2>
+
+  <form (ngSubmit)="genererQuestionnaire()" class="mt-4 grid grid-cols-1 gap-3 md:max-w-xl">
+    <div class="grid grid-cols-1 gap-1">
+      <label for="titre" class="text-sm font-medium text-slate-700">Titre</label>
+      <input id="titre" [(ngModel)]="titre" name="titre" required class="input" />
+    </div>
+    <div class="grid grid-cols-1 gap-1">
+      <label for="description" class="text-sm font-medium text-slate-700">Description</label>
+      <textarea id="description" [(ngModel)]="description" name="description" required class="input" rows="3"></textarea>
     </div>
     <div>
-      <label for="description">Description :</label>
-      <textarea id="description" [(ngModel)]="description" name="description" required></textarea>
+      <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700" [disabled]="loading">
+        <span *ngIf="!loading">Générer</span>
+        <span *ngIf="loading" class="inline-flex items-center gap-2">
+          <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+          Génération…
+        </span>
+      </button>
     </div>
-    <button type="submit">Générer</button>
   </form>
-  <div *ngIf="message" style="color:green;margin-bottom:1rem;">{{ message }}</div>
-  <h2>Questionnaires générés</h2>
-  <table *ngIf="questionnaires.length">
-    <thead>
-      <tr>
-        <th>Titre</th>
-        <th>Description</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let q of questionnaires">
-        <td>{{ q.titre }}</td>
-        <td>{{ q.description }}</td>
-        <td>{{ q.createdAt | date:'short' }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <div *ngIf="!questionnaires.length" style="color:#888;">Aucun questionnaire généré pour le moment.</div>
+
+  <div *ngIf="message" class="mt-3 text-emerald-700">{{ message }}</div>
+
+  <!-- Actions after generation -->
+  <div *ngIf="showActions && editing" class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="rounded-xl border border-slate-200 p-4">
+      <h4 class="font-semibold text-slate-800 mb-2">Modifier le questionnaire</h4>
+      <div class="grid gap-2">
+        <input class="input" [(ngModel)]="editing.titre" name="edit_titre" placeholder="Titre" />
+        <textarea class="input" [(ngModel)]="editing.description" name="edit_description" rows="3" placeholder="Description"></textarea>
+        <textarea class="input font-mono text-sm" [(ngModel)]="editing.jsonContent" name="edit_json" rows="8" placeholder='JSON des questions (QCM + QRO)'></textarea>
+        <div class="flex items-center gap-2">
+          <button (click)="modifierSauvegarder()" class="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700" type="button">Enregistrer</button>
+          <button (click)="partager()" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700" type="button">Partager</button>
+        </div>
+      </div>
+    </div>
+    <div class="rounded-xl border border-slate-200 p-4">
+      <h4 class="font-semibold text-slate-800 mb-2">Aperçu rapide</h4>
+      <pre class="text-xs bg-slate-50 p-3 rounded overflow-auto">{{ editing.jsonContent || (editing | json) }}</pre>
+    </div>
+  </div>
+
+  <h3 class="mt-8 text-lg font-semibold text-slate-800">Questionnaires générés</h3>
+  <div class="mt-3 rounded-xl border border-slate-200 overflow-x-auto">
+    <table *ngIf="questionnaires.length" class="min-w-full divide-y divide-slate-200">
+      <thead class="bg-slate-50">
+        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <th class="px-4 py-3">Titre</th>
+          <th class="px-4 py-3">Description</th>
+          <th class="px-4 py-3">Date</th>
+          <th class="px-4 py-3">Partagé</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100 bg-white">
+        <tr *ngFor="let q of questionnaires" class="hover:bg-slate-50/70">
+          <td class="px-4 py-3 font-medium text-slate-800">{{ q.titre }}</td>
+          <td class="px-4 py-3 text-slate-700">{{ q.description }}</td>
+          <td class="px-4 py-3 text-slate-700">{{ q.createdAt | date:'short' }}</td>
+          <td class="px-4 py-3">
+            <span class="rounded-full px-2.5 py-1 text-xs font-medium"
+              [ngClass]="{
+                'bg-emerald-50 text-emerald-700 border border-emerald-200': q.shared,
+                'bg-slate-50 text-slate-600 border border-slate-200': !q.shared
+              }">
+              {{ q.shared ? 'Oui' : 'Non' }}
+            </span>
+            <button class="ml-2 text-xs px-2 py-1 rounded bg-indigo-600 text-white" (click)="generateReport(q)">Rapport</button>
+          </td>
+        </tr>
+        <tr *ngIf="!questionnaires.length">
+          <td colspan="3" class="px-4 py-6 text-center text-sm text-slate-500">Aucun questionnaire généré pour le moment.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!questionnaires.length" class="px-4 py-6 text-center text-sm text-slate-500">Aucun questionnaire généré pour le moment.</div>
+  </div>
 </div>

@@ -1,10 +1,8 @@
-package com.example.TRANSFAGRI.dto;
+package com.example.TRANSFAGRI.Dto;
 
 public enum Role {
-    SUPER_ADMIN,
     ADMIN,
     CNEF,
     EMF,
-    UTILISATEUR,
-    INSPECTEUR
+    PASNFI,
 }

@@ -8,4 +8,5 @@ public interface ActiviteService {
     Activite getById(Long id);
     Activite save(Activite activite);
     void delete(Long id);
+    long count();
 }

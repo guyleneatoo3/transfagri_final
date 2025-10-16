@@ -1,8 +1,8 @@
 package com.example.TRANSFAGRI.Controller;
 
 import com.example.TRANSFAGRI.Model.Utilisateur;
-import com.example.TRANSFAGRI.dto.UtilisateurDto;
-import com.example.TRANSFAGRI.dto.UtilisateurResponse;
+import com.example.TRANSFAGRI.Dto.UtilisateurDto;
+import com.example.TRANSFAGRI.Dto.UtilisateurResponse;
 import com.example.TRANSFAGRI.Service.UtilisateurService;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/utilisateurs")
@@ -32,7 +30,7 @@ public class UtilisateurController {
 
     //@ApiOperation(value = "Get a utilisateur by Id")
     @GetMapping("/{idutilisateur}")
-    public ResponseEntity<UtilisateurResponse> getUtilisateurById(@PathVariable Long id) {
+    public ResponseEntity<UtilisateurResponse> getUtilisateurById(@PathVariable("idutilisateur") Long id) {
         return utilisateurService.getUtilisateurById(id)
                 .map(this::toResponse)
                 .map(ResponseEntity::ok)
@@ -40,7 +38,7 @@ public class UtilisateurController {
     }
 
     @PutMapping("/{idutilisateur}")
-    public ResponseEntity<UtilisateurResponse> updateUtilisateur(@PathVariable Long id, @RequestBody UtilisateurDto utilisateurDto) {
+    public ResponseEntity<UtilisateurResponse> updateUtilisateur(@PathVariable("idutilisateur") Long id, @RequestBody UtilisateurDto utilisateurDto) {
         Utilisateur updated = utilisateurService.updateUtilisateur(id, utilisateurDto);
         return ResponseEntity.ok(toResponse(updated));
     }
@@ -55,7 +53,7 @@ public class UtilisateurController {
 
     //@ApiOperation(value = "Delete a utilisateur")
     @DeleteMapping("/{idutilisateur}")
-    public ResponseEntity<Void> deleteUtilisateur(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUtilisateur(@PathVariable("idutilisateur") Long id) {
         if (!utilisateurService.getUtilisateurById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }

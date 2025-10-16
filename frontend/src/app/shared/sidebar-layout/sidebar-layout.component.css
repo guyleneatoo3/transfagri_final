@@ -1,0 +1,13 @@
+/* Keep sidebar always dark and above content on mobile */
+:host { display: block; }
+
+/* Force content to respect sidebar z-index */
+.content-under-sidebar { position: relative; z-index: 10; }
+
+/* Base body bg to match design when used globally */
+body { background: #f3f7fb; }
+
+/* Optional subtle scrollbar styling */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.5); border-radius: 9999px; }
+::-webkit-scrollbar-track { background: transparent; }

@@ -1,40 +1,45 @@
-package com.example.TRANSFAGRI.auth;
+package com.example.TRANSFAGRI.Auth;
 
 import com.example.TRANSFAGRI.Configuration.JwtUtil;
-import com.example.TRANSFAGRI.dto.UtilisateurDto;
-import com.example.TRANSFAGRI.dto.Role;
 import com.example.TRANSFAGRI.Model.Utilisateur;
 import com.example.TRANSFAGRI.Repository.UtilisateurRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
 
-        private final UtilisateurRepository repository;
+                private final UtilisateurRepository repository;
     private final PasswordEncoder passwordEncoder;
-        private final JwtUtil jwtService;
+                private final JwtUtil jwtService;
     private final AuthenticationManager authenticationManager;
 
+        public AuthenticationService(UtilisateurRepository repository,
+                                                                 PasswordEncoder passwordEncoder,
+                                                                 JwtUtil jwtService,
+                                                                 AuthenticationManager authenticationManager) {
+                this.repository = repository;
+                this.passwordEncoder = passwordEncoder;
+                this.jwtService = jwtService;
+                this.authenticationManager = authenticationManager;
+        }
 
 
     public  AuthenticationResponse register( RegisterRequest request){
-        var utilisateur = Utilisateur.builder()
-                .email(request.getEmail())
-                .motdepasse(passwordEncoder.encode(request.getMotdepasse()))
-                .role(request.getRole())
-                .build();
+    Utilisateur utilisateur = new Utilisateur();
+    utilisateur.setNom(request.getNom());
+    utilisateur.setEmail(request.getEmail());
+    utilisateur.setMotdepasse(passwordEncoder.encode(request.getMotdepasse()));
+    utilisateur.setRole(request.getRole());
 
         repository.save(utilisateur);
-        var jwtToken= jwtService.generateToken(utilisateur);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .role(utilisateur.getRole())
-                .build();
+        String jwtToken = jwtService.generateToken(utilisateur);
+        AuthenticationResponse response = new AuthenticationResponse();
+        response.setToken(jwtToken);
+        response.setRole(utilisateur.getRole());
+        return response;
     }
 
     public AuthenticationResponse authenticate ( AuthenticationRequest request){
@@ -44,13 +49,13 @@ public class AuthenticationService {
                         request.getMotdepasse()
                 )
         );
-        var utilisateur= repository.findByEmail(request.getEmail()).orElseThrow();
-        var jwtToken= jwtService.generateToken(utilisateur);
+        Utilisateur utilisateur = repository.findByEmail(request.getEmail()).orElseThrow();
+        String jwtToken = jwtService.generateToken(utilisateur);
 
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .role(utilisateur.getRole())
-                .build();
+        AuthenticationResponse response = new AuthenticationResponse();
+        response.setToken(jwtToken);
+        response.setRole(utilisateur.getRole());
+        return response;
 
 
     }

@@ -4,4 +4,5 @@ export interface UtilisateurDTO {
   email: string;
   motDePasse: string;
   role: string;
+  idutilisateur: number;
 }

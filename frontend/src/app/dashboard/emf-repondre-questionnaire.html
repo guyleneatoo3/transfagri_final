@@ -1,0 +1,64 @@
+<div class="p-4">
+  <h2 class="text-xl font-semibold mb-3">Questionnaires partagés</h2>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="bg-white rounded shadow p-3">
+      <ul class="divide-y">
+        <li *ngFor="let q of shared" class="py-2 flex items-center justify-between">
+          <div>
+            <div class="font-medium">{{ q.titre }}</div>
+            <div class="text-sm text-gray-500">Lancé le: {{ q.sharedAt || q.createdAt | date:'mediumDate' }}</div>
+          </div>
+          <button class="px-3 py-1 rounded bg-blue-600 text-white" (click)="open(q)">Répondre</button>
+        </li>
+      </ul>
+    </div>
+    <div class="bg-white rounded shadow p-3" *ngIf="selected">
+      <h3 class="text-lg font-semibold mb-2">{{ selected.titre }}</h3>
+      <div class="text-xs text-gray-500 mb-3">Lancé le: {{ selected.sharedAt || selected.createdAt | date:'medium' }}</div>
+      <div class="space-y-3 max-h-[60vh] overflow-auto pr-2">
+        <div *ngFor="let q of parsedQuestions" class="border rounded p-3">
+          <div class="flex items-start justify-between">
+            <div class="font-medium">{{ q.index }}. {{ q.label }} <span *ngIf="q.required" class="text-rose-600">*</span></div>
+            <div class="text-xs text-gray-500">{{ q.type }}</div>
+          </div>
+          <div class="mt-2" [ngSwitch]="q.type">
+            <!-- Single choice -->
+            <div *ngSwitchCase="'single'" class="space-y-1">
+              <label *ngFor="let opt of q.options" class="flex items-center gap-2">
+                <input type="radio" [name]="q.key" [value]="opt" [(ngModel)]="answers[q.key]" />
+                <span>{{ opt }}</span>
+              </label>
+            </div>
+            <!-- Multiple choice -->
+            <div *ngSwitchCase="'multi'" class="space-y-1">
+              <label *ngFor="let opt of q.options" class="flex items-center gap-2">
+                <input type="checkbox" [checked]="(answers[q.key] || []).includes(opt)" (change)="toggleMulti(q.key, opt)" />
+                <span>{{ opt }}</span>
+              </label>
+            </div>
+            <!-- Number -->
+            <div *ngSwitchCase="'number'">
+              <input type="number" class="w-full border rounded p-2" [(ngModel)]="answers[q.key]" />
+            </div>
+            <!-- Date -->
+            <div *ngSwitchCase="'date'">
+              <input type="date" class="w-full border rounded p-2" [(ngModel)]="answers[q.key]" />
+            </div>
+            <!-- Text / default -->
+            <div *ngSwitchDefault>
+              <textarea rows="3" class="w-full border rounded p-2" [(ngModel)]="answers[q.key]" placeholder="Votre réponse..."></textarea>
+            </div>
+          </div>
+          <div *ngIf="submittedAttempt && q.required && ((q.type==='single' && !answers[q.key]) || (q.type==='multi' && (!answers[q.key] || answers[q.key].length===0)) || (q.type!=='single' && q.type!=='multi' && (!answers[q.key] || (answers[q.key]||'').toString().trim()==='')))" class="text-xs text-rose-600 mt-1">
+            Réponse obligatoire
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 flex gap-2">
+        <button class="px-4 py-2 rounded bg-green-600 text-white" (click)="submit()">Envoyer</button>
+        <button class="px-4 py-2 rounded bg-gray-200" (click)="selected = null">Annuler</button>
+      </div>
+      <div class="text-sm text-emerald-700 mt-2" *ngIf="message">{{ message }}</div>
+    </div>
+  </div>
+</div>

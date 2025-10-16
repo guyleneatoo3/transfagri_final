@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface IndicateurService {
     Indicateur saveIndicateur(Indicateur indicateur);
     List<Indicateur> getAllIndicateurs();
+    long countIndicateurs();
     Optional<Indicateur> getIndicateurById(Long id);
     void deleteIndicateur(Long id);
     Indicateur updateIndicateur(Long id, Indicateur updatedIndicateur);

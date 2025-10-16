@@ -1,0 +1,14 @@
+<div class="p-4">
+  <h2 class="text-xl font-semibold mb-3">Formations disponibles</h2>
+  <div class="bg-white rounded shadow p-3">
+    <ul class="divide-y">
+      <li *ngFor="let d of docs" class="py-2 flex items-center justify-between">
+        <div>
+          <div class="font-medium">{{ d.title }}</div>
+          <div class="text-sm text-gray-500">{{ d.fileName }}</div>
+        </div>
+        <button class="px-3 py-1 rounded bg-blue-600 text-white" (click)="download(d.id)">Télécharger</button>
+      </li>
+    </ul>
+  </div>
+</div>
